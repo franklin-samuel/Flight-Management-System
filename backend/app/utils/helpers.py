@@ -1,0 +1,1 @@
+# Funções auxiliares normalmente reutilizavéis, como gerar_uuid, formatar_cpf, etc

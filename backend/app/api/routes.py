@@ -1,0 +1,1 @@
+# Definição das rotas da API(get, post, put, patch, delete de várias entidades e dados)

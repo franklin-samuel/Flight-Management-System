@@ -1,0 +1,1 @@
+# Regras de negócio de relatórios(geração de relatórios)
