@@ -4,8 +4,11 @@ from sqlalchemy import create_engine
 
 Base = declarative_base()
 
-DATABASE_URL = "sqlink"
+DATABASE_URL = "sqlite:///./app.db"
 
 engine = create_engine(
     DATABASE_URL,
+    connect_args={"check_same_thread": False}
 )
+
+

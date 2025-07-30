@@ -3,7 +3,7 @@ from mixins import AuditavelMixin
 from interfaces import Logavel
 
 class Auditor(AuditavelMixin, Logavel):
-    def __init__(self, nome):
+    def __init__(self, nome: str):
         super().__init__()
         self.nome = nome
     

@@ -37,7 +37,7 @@ class Passageiro(Pessoa):
             print(bagagem)
 
 class Funcionario(Pessoa, IdentificavelMixin, Logavel):
-    def __init__(self, cargo, matricula, nome, cpf):
+    def __init__(self, cargo: str, matricula: str, nome: str, cpf: str):
         super().__init__(nome=nome, cpf=cpf)
         self.cargo = cargo
         self.matricula = matricula
