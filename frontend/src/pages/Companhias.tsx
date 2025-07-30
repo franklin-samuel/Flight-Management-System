@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardContent } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { Building2, Plus } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Companhia {
   id: number;
@@ -15,6 +16,8 @@ export const Companhias: React.FC = () => {
   const [showForm, setShowForm] = useState(false);
   const [novaCompanhia, setNovaCompanhia] = useState('');
   const [error, setError] = useState('');
+
+  const navigate = useNavigate()
 
   const idCounter = useRef(4);
 
@@ -137,6 +140,7 @@ export const Companhias: React.FC = () => {
               {companhias.map((companhia) => (
                 <div
                   key={companhia.id}
+                  onClick={() => navigate(`/companhias/${companhia.id}`)}
                   className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow"
                 >
                   <div className="flex items-center space-x-3">

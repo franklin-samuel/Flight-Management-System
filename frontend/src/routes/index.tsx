@@ -5,6 +5,7 @@ import { Voos } from '../pages/Voos';
 import Auditoria from '../pages/Auditoria';
 import { Funcionarios } from '../pages/Funcionarios';
 import { Companhias } from '../pages/Companhias';
+import { CompanhiaDetalhes } from '../pages/CompanhiaDetalhes';
 import { Relatorios } from '../pages/Relatorios';
 
 export default function RoutesApp() {
@@ -19,6 +20,7 @@ export default function RoutesApp() {
                         <Route path="/Funcionarios" element={<Funcionarios />}/>
                         <Route path="/Auditoria" element={<Auditoria />} />
                         <Route path="/Companhias" element={<Companhias />} />
+                        <Route path="/companhias/:id" element={<CompanhiaDetalhes />} />
                         <Route path="/Relatorios" element={<Relatorios />} />
                     </Routes>
                 </main>
