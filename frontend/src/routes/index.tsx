@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from '../components/layout/NavBar';
 import Home from '../pages/Home';
-import Voos from '../pages/Voos';
+import { Voos } from '../pages/Voos';
 import Auditoria from '../pages/Auditoria';
 import { Funcionarios } from '../pages/Funcionarios';
 
