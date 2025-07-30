@@ -1,9 +1,10 @@
 # Pessoa, Passageiro, Funcionario
 from mixins import IdentificavelMixin
+from interfaces import Logavel
 
 class Pessoa:
     """Classe base para pessoas do sistema."""
-    def __init__(self, nome: str, cpf: str):
+    def __init__(self, nome: str, cpf: str, **kwargs):
         self._nome = nome
         self._cpf = cpf
        
@@ -36,5 +37,19 @@ class Passageiro(Pessoa):
             print(bagagem)
 
 class Funcionario(Pessoa, IdentificavelMixin, Logavel):
+    def __init__(self, cargo, matricula, nome, cpf):
+        super().__init__(nome=nome, cpf=cpf)
+        self.cargo = cargo
+        self.matricula = matricula
+
+    def exibir_dados(self):
+        print(f"Nome: {self.nome}")
+        print(f"Cargo: {self.cargo}")
+        print(f"Matrícula: {self.matricula}")
+        print(f"ID: {self.get_id()}")
+
+    def logar_entrada(self):
+        print(f"Funcionário {self.nome} (matrícula: {self.matricula}) logou no sistema.")
     
+
         
