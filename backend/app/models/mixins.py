@@ -9,3 +9,8 @@ class IdentificavelMixin:
     def get_id(self):
         # TODO: retornar o ID
         return self.id
+
+class AuditavelMixin:
+    """Fornece logs simples ao console."""
+    def log_evento(self, evento: str):
+        print(f"[LOG] {evento}")
