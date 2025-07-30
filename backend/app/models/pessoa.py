@@ -1,4 +1,5 @@
 # Pessoa, Passageiro, Funcionario
+from mixins import IdentificavelMixin
 
 class Pessoa:
     """Classe base para pessoas do sistema."""
@@ -22,8 +23,6 @@ class Bagagem:
     def __str__(self):
         return f"{self.descricao} - {self.peso} kg"
 
-    
-
 class Passageiro(Pessoa):
     def __init__(self, nome: str, cpf: str):
         super().__init__(nome, cpf)
@@ -35,5 +34,7 @@ class Passageiro(Pessoa):
     def listar_bagagens(self):
         for bagagem in self.bagagens():
             print(bagagem)
-        
+
+class Funcionario(Pessoa, IdentificavelMixin, Logavel):
+    
         
