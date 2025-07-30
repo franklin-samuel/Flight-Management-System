@@ -39,7 +39,7 @@ export const CompanhiaDetalhes: React.FC = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <Button
-            onClick={() => navigate('/')}
+            onClick={() => navigate('/Companhias')}
             icon={ArrowLeft}
             variant="secondary"
           >

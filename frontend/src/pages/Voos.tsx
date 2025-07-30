@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Card, CardHeader, CardContent } from '../components/ui/Card';
 import { Plane, Users, UserCheck } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface Voo {
   id: number;
@@ -16,6 +17,8 @@ interface Voo {
 export const Voos: React.FC = () => {
   const [voos, setVoos] = useState<Voo[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate()  
 
   const mockVoos = useRef<Voo[]>([
     {
@@ -92,12 +95,13 @@ export const Voos: React.FC = () => {
               <p className="text-sm">Os voos serão exibidos aqui quando criados.</p>
             </div>
           ) : (
-            <div className="space-y-4"> //Elemento clicável que Mostrava passageiros tripulacao e bagagens relacionadas a passageiro
+            <div className="space-y-4">
               {voos.map((voo) => {
                 const ocupacao = getOcupacaoStatus(voo.passageiros, voo.capacidade);
                 return (
                   <div
                     key={voo.id}
+                    onClick={() => navigate(`/voos/${voo.id}`) }
                     className="border border-gray-200 rounded-lg p-6 hover:shadow-md transition-shadow"
                   >
                     <div className="flex items-center justify-between">

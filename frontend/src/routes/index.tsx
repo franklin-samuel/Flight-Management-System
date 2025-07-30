@@ -7,6 +7,7 @@ import { Funcionarios } from '../pages/Funcionarios';
 import { Companhias } from '../pages/Companhias';
 import { CompanhiaDetalhes } from '../pages/CompanhiaDetalhes';
 import { Relatorios } from '../pages/Relatorios';
+import { VooDetalhes } from '../pages/VoosDetalhes';
 
 export default function RoutesApp() {
     return (
@@ -17,6 +18,7 @@ export default function RoutesApp() {
                     <Routes>
                         <Route path="/" element={<Home />} />
                         <Route path="/Voos" element={<Voos />} />
+                        <Route path="/voos/:id" element={<VooDetalhes />} />
                         <Route path="/Funcionarios" element={<Funcionarios />}/>
                         <Route path="/Auditoria" element={<Auditoria />} />
                         <Route path="/Companhias" element={<Companhias />} />
