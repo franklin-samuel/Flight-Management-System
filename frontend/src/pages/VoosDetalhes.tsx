@@ -1,9 +1,10 @@
 // src/pages/VooDetalhes.tsx
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Card, CardHeader, CardContent } from '../components/ui/Card';
-import { Users, Luggage, UserCheck, Plane } from 'lucide-react';
+import { Users, Luggage, UserCheck, Plane, ArrowLeft } from 'lucide-react';
 import { type Passageiro } from '../types/models';
+import { Button } from '../components/ui/Button';
 
 const passageirosMock: Passageiro[] = [
   {
@@ -38,6 +39,7 @@ const passageirosMock: Passageiro[] = [
 
 export const VooDetalhes: React.FC = () => {
   const { id } = useParams(); // ID do voo
+  const navigate = useNavigate()
 
   // Em um caso real, aqui você buscaria os dados do voo com esse ID
   const voo = {
@@ -53,7 +55,12 @@ export const VooDetalhes: React.FC = () => {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold text-gray-900">Detalhes do Voo {voo.numero_voo}</h1>
+      <div className='flex items-center space-x-3'>
+          <Button onClick={() => navigate(-1)} icon={ArrowLeft} variant='secondary'>
+            Voltar
+            </Button>
+          <h1 className="text-3xl font-bold text-gray-900">Detalhes do Voo {voo.numero_voo}</h1>
+      </div>
 
       <Card>
         <CardHeader>

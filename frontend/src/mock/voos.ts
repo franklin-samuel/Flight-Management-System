@@ -7,20 +7,28 @@ export const mockVoos: Voo[] = [
     numero_voo: 'AZ101',
     origem: 'São Paulo (GRU)',
     destino: 'Rio de Janeiro (GIG)',
-    aeronave: 'Airbus A320',
+    aeronave: {
+      id: 1,
+      modelo: 'Airbus A320',
+      capacidade: 180
+    },
     capacidade: 180,
-    passageiros: 170,
-    tripulacao: 6,
+    passageiros: [],
+    tripulacao: [],
   },
   {
     id: 2,
-    companhiaId: 1,
-    numero_voo: 'AZ202',
-    origem: 'São Paulo (GRU)',
+    companhiaId: 2,
+    numero_voo: 'JJ202',
+    origem: 'Brasília (BSB)',
     destino: 'Salvador (SSA)',
-    aeronave: 'Boeing 737',
+    aeronave: {
+      id: 2,
+      modelo: 'Boeing 737',
+      capacidade: 160
+    },
     capacidade: 160,
-    passageiros: 120,
-    tripulacao: 5,
+    passageiros: [],
+    tripulacao: [],
   }
 ];

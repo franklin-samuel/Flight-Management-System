@@ -39,7 +39,7 @@ export const CompanhiaDetalhes: React.FC = () => {
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-3">
           <Button
-            onClick={() => navigate('/Companhias')}
+            onClick={() => navigate(-1)}
             icon={ArrowLeft}
             variant="secondary"
           >
@@ -74,7 +74,7 @@ export const CompanhiaDetalhes: React.FC = () => {
           ) : (
             <div className="space-y-4">
               {voos.map((voo) => {
-                const ocupacao = getOcupacaoStatus(voo.passageiros, voo.capacidade);
+                const ocupacao = getOcupacaoStatus(voo.passageiros.length, voo.capacidade);
                 return (
                   <div
                     key={voo.id}
@@ -94,7 +94,7 @@ export const CompanhiaDetalhes: React.FC = () => {
                             {voo.origem} → {voo.destino}
                           </p>
                           <p className="text-sm text-gray-500">
-                            Aeronave: {voo.aeronave}
+                            Aeronave: {voo.aeronave.modelo}
                           </p>
                         </div>
                       </div>
@@ -109,12 +109,12 @@ export const CompanhiaDetalhes: React.FC = () => {
                         <div className="flex items-center space-x-2 text-gray-600">
                           <Users className="h-4 w-4" />
                           <span className="text-sm">
-                            {voo.passageiros}/{voo.capacidade}
+                            {voo.passageiros.length}/{voo.capacidade}
                           </span>
                         </div>
                         <div className="flex items-center space-x-2 text-gray-600">
                           <UserCheck className="h-4 w-4" />
-                          <span className="text-sm">{voo.tripulacao} tripulantes</span>
+                          <span className="text-sm">{voo.tripulacao.length} tripulantes</span>
                         </div>
                       </div>
                     </div>
@@ -122,13 +122,13 @@ export const CompanhiaDetalhes: React.FC = () => {
                     <div className="mt-4">
                       <div className="flex items-center justify-between text-xs text-gray-500 mb-1">
                         <span>Ocupação</span>
-                        <span>{Math.round((voo.passageiros / voo.capacidade) * 100)}%</span>
+                        <span>{Math.round((voo.passageiros.length / voo.capacidade) * 100)}%</span>
                       </div>
                       <div className="w-full bg-gray-200 rounded-full h-2">
                         <div
                           className={`h-2 rounded-full ${ocupacao.color}`}
                           style={{
-                            width: `${(voo.passageiros / voo.capacidade) * 100}%`
+                            width: `${(voo.passageiros.length / voo.capacidade) * 100}%`
                           }}
                         ></div>
                       </div>
