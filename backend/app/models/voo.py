@@ -1,17 +1,6 @@
 #Voo, Miniaeronave, Companhia Aérea
 
-class Voo:
-    def __init__(self, numero_voo, origem, destino, aeronave):
-        self.numero_voo = numero_voo
-        self.origem = origem
-        self.destino = destino
-        self.aeronave = aeronave
-        self.passageiros = {}
-        self.tripulação = {}
-        # implementar database nas listas 
-
-    def adicionar_passageiro(self, passageiro, numero_voo):
-
+            
 class MiniAeronave:
     """Objeto da composição dentro de Voo."""
     def __init__(self, modelo: str, capacidade: int):
@@ -20,7 +9,33 @@ class MiniAeronave:
     
     def resumo_voo(self):
         return f"{self.modelo} com capacidade para {self.capacidade} passageiros. "
+
+class Voo:
+    def __init__(self, numero_voo, origem, destino, aeronave: MiniAeronave):
+        self.numero_voo = numero_voo
+        self.origem = origem
+        self.destino = destino
+        self.aeronave = aeronave
+        self.passageiros = []
+        self.tripulação = []
+        # implementar database nas listas 
+
+    def adicionar_passageiro(self, passageiro, capacidade):
+        if len(self.passageiros) >= capacidade:
+            return
+        if passageiro not in self.passageiros:
+            self.passageiros.append(passageiro)
+
+    def adicionar_tripulante(self, tripulante):
+        self.tripulação.append(tripulante)
+
+    def listar_passageiros(self):
+        for passageiro in self.passageiros:
+            print(passageiro)
     
+    def listar_tripulantes(self):
+        for tripulante in self.tripulação:
+            print(tripulante)    
 
 class CompanhiaAerea:
     """Agrupa seus voos (has-a)."""
