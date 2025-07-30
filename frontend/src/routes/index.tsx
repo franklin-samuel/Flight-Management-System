@@ -4,6 +4,8 @@ import Home from '../pages/Home';
 import { Voos } from '../pages/Voos';
 import Auditoria from '../pages/Auditoria';
 import { Funcionarios } from '../pages/Funcionarios';
+import { Companhias } from '../pages/Companhias';
+import { Relatorios } from '../pages/Relatorios';
 
 export default function RoutesApp() {
     return (
@@ -12,10 +14,12 @@ export default function RoutesApp() {
                 <Navbar />
                 <main className='container mx-auto px-4 py-8'>
                     <Routes>
-                        <Route path="/" element={<Home />}/>
-                        <Route path="/Voos" element={<Voos />}/>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/Voos" element={<Voos />} />
                         <Route path="/Funcionarios" element={<Funcionarios />}/>
-                        <Route path="/Auditoria" element={<Auditoria />}/>
+                        <Route path="/Auditoria" element={<Auditoria />} />
+                        <Route path="/Companhias" element={<Companhias />} />
+                        <Route path="/Relatorios" element={<Relatorios />} />
                     </Routes>
                 </main>
             </div>
