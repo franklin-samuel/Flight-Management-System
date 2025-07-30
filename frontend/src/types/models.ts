@@ -1,7 +1,12 @@
 export interface Companhia {
   id: number;
   nome: string;
-  total_voos: number;
+}
+
+export interface MiniAeronave {
+  id: number;
+  modelo: string;
+  capacidade: number;
 }
 
 export interface Voo {
@@ -10,22 +15,32 @@ export interface Voo {
   numero_voo: string;
   origem: string;
   destino: string;
-  aeronave: string;
+  aeronave: MiniAeronave;
   capacidade: number;
-  passageiros: number;
-  tripulacao: number;
+  passageiros: Passageiro[];
+  tripulacao: Funcionario[];
 }
+
+export interface Funcionario {
+    id: number,
+    nome: string,
+    cpf: string,
+    cargo: string,
+    matricula: string
+}
+
 
 export interface Passageiro {
   id: number;
-  vooId: number;
   nome: string;
-  idade: number;
+  cpf: string;
+  bagagens: Bagagem[];
 }
 
 export interface Bagagem {
   id: number;
-  passageiroId: number;
-  peso: number; // em kg
+  peso: number; 
   descricao: string;
 }
+
+

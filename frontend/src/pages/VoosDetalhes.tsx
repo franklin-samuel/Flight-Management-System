@@ -3,18 +3,38 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import { Card, CardHeader, CardContent } from '../components/ui/Card';
 import { Users, Luggage, UserCheck, Plane } from 'lucide-react';
-
-interface Passageiro {
-  id: number;
-  nome: string;
-  bagagens: number;
-}
+import { type Passageiro } from '../types/models';
 
 const passageirosMock: Passageiro[] = [
-  { id: 1, nome: 'Carlos Silva', bagagens: 2 },
-  { id: 2, nome: 'Ana Paula', bagagens: 1 },
-  { id: 3, nome: 'João Pedro', bagagens: 3 },
+  {
+    id: 1,
+    nome: 'Carlos Silva',
+    cpf: '13708316410',
+    bagagens: [
+      { id: 1, peso: 12.5, descricao: 'Mala de mão' },
+      { id: 2, peso: 23, descricao: 'Bagagem despachada' }
+    ]
+  },
+  {
+    id: 2,
+    nome: 'Ana Paula',
+    cpf: '78949972472',
+    bagagens: [
+      { id: 3, peso: 18, descricao: 'Mochila' }
+    ]
+  },
+  {
+    id: 3,
+    nome: 'João Pedro',
+    cpf: '39336972472',
+    bagagens: [
+      { id: 4, peso: 10, descricao: 'Mala pequena' },
+      { id: 5, peso: 22, descricao: 'Mala média' },
+      { id: 6, peso: 5, descricao: 'Bolsa' }
+    ]
+  }
 ];
+
 
 export const VooDetalhes: React.FC = () => {
   const { id } = useParams(); // ID do voo
@@ -65,7 +85,7 @@ export const VooDetalhes: React.FC = () => {
               <span className="text-gray-800">{p.nome}</span>
               <div className="flex items-center space-x-2 text-sm text-gray-600">
                 <Luggage className="w-4 h-4" />
-                <span>{p.bagagens} bagagens</span>
+                <span>{p.bagagens.length} bagagens</span>
               </div>
             </div>
           ))}
