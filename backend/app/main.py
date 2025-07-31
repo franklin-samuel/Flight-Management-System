@@ -1,1 +1,0 @@
-# Ponto de entrada da aplicação Flask

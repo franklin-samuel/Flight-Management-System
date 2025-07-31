@@ -20,8 +20,8 @@ class Voo:
         self.tripulação = []
         # implementar database nas listas 
 
-    def adicionar_passageiro(self, passageiro, capacidade):
-        if len(self.passageiros) >= capacidade:
+    def adicionar_passageiro(self, passageiro):
+        if len(self.passageiros) >= self.aeronave.capacidade:
             return
         if passageiro not in self.passageiros:
             self.passageiros.append(passageiro)
@@ -66,7 +66,7 @@ class CompanhiaAerea:
         
     def buscar_voo(self, numero: str):
         for voo in self._voos:
-            if voo.numero == numero:
+            if voo.numero_voo == numero:
                 return voo
         return None
         

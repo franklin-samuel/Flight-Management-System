@@ -1,6 +1,7 @@
 # Funções CRUD (adicionar_voo, buscar_passageiro, ...)
 from sqlalchemy.orm import Session
-from app.models import Voo, Passageiro
+from app.models.voo import Voo
+from app.models.pessoa import Passageiro
 
 def adicionar_voo(db: Session, numero_voo: str, origem: str, destino: str, aeronave: str):
     novo_voo = Voo(

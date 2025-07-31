@@ -1,6 +1,6 @@
-from mixins import IdentificavelMixin
-from interfaces import Logavel
-from bagagem import Bagagem
+from app.models.mixins import IdentificavelMixin
+from app.models.interfaces import Logavel
+from app.models.bagagem import Bagagem
 
 class Pessoa:
     """Classe base para pessoas do sistema."""
@@ -25,7 +25,7 @@ class Passageiro(Pessoa):
         self.bagagens.append(bagagem)
         
     def listar_bagagens(self):
-        for bagagem in self.bagagens():
+        for bagagem in self.bagagens:
             print(bagagem)
 
 class Funcionario(Pessoa, IdentificavelMixin, Logavel):
