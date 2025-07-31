@@ -22,3 +22,13 @@ def listar_voos(db: Session):
 
 def buscar_passageiro(db: Session, cpf: str):
     return db.query(Passageiro).filter(Passageiro.cpf == cpf).first()
+
+def adicionar_passageiro(db: Session, nome: str, cpf: str):
+    novo_passageiro = Passageiro(
+        nome=nome,
+        cpf=cpf,
+    )
+    db.add(novo_passageiro)
+    db.commit()
+    db.refresh(novo_passageiro)
+    return novo_passageiro
