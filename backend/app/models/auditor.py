@@ -11,7 +11,7 @@ class Auditor(AuditavelMixin, Logavel):
         print(f'Auditor {self.nome} fez login no sistema')
     
     def auditar_voo(voo):
-        if voo.passageiros <= voo.capacidade and voo.passageiros >= 1:
+        if len(voo.passageiros) <= voo.aeronave.capacidade and len(voo.passageiros) >= 1:
             print("Relatorio deve ser feito aqui")
         
     def __str__(self):
