@@ -8,6 +8,28 @@ routes = Blueprint("routes", __name__)
 
 @routes.route("/voos", methods=["POST"])
 def criar_voo_route():
+    """
+    Criar um novo voo
+    ---
+    tags:
+      - Voos
+    parameters:
+      - in: body
+        name: body
+        schema:
+          properties:
+            numero_voo:
+              type: string
+            origem:
+              type: string
+            destino:
+              type: string
+    responses:
+      201:
+        description: Voo criado com sucesso
+      400:
+        description: Erro na criação
+    """
     db = SessionLocal()
     try:
         data = request.get_json()
@@ -23,6 +45,15 @@ def criar_voo_route():
 
 @routes.route("/voos", methods=["GET"])
 def lista_voos_route():
+    """
+    Listar todos os voos
+    ---
+    tags:
+      - Voos
+    responses:
+      200:
+        description: Lista de voos
+    """
     db = SessionLocal()
     try:
         voos = listar_todos_voos(db)
@@ -43,6 +74,22 @@ def lista_voos_route():
 
 @routes.route("/passageiros/<cpf>", methods=["GET"])
 def buscar_passageiro_route(cpf):
+    """
+    Buscar passageiro por CPF
+    ---
+    tags:
+      - Passageiros
+    parameters:
+      - in: path
+        name: cpf
+        type: string
+        required: true
+    responses:
+      200:
+        description: Passageiro encontrado
+      404:
+        description: Passageiro não encontrado
+    """
     db = SessionLocal()
     try:
         passageiro = buscar_passageiro_por_cpf(db, cpf)
@@ -58,6 +105,28 @@ def buscar_passageiro_route(cpf):
 
 @routes.route("/voos/<numero_voo>/passageiros", methods=["POST"])
 def adicionar_passageiro_route(numero_voo):
+    """
+    Adicionar passageiro ao voo
+    ---
+    tags:
+      - Passageiros
+    parameters:
+      - in: path
+        name: numero_voo
+        required: true
+        type: string
+      - in: body
+        name: body
+        schema:
+          properties:
+            nome:
+              type: string
+            cpf:
+              type: string
+    responses:
+      200:
+        description: Passageiro adicionado
+    """
     db = SessionLocal()
     try:
         data = request.get_json()
@@ -88,13 +157,39 @@ def adicionar_passageiro_route(numero_voo):
 
 @routes.route("/voos/<numero_voo>/tripulantes", methods=["POST"])
 def adicionar_tripulante_route(numero_voo):
+    """
+    Adicionar tripulante ao voo
+    ---
+    tags:
+      - Tripulantes
+    parameters:
+      - in: path
+        name: numero_voo
+        required: true
+        type: string
+      - in: body
+        name: body
+        schema:
+          properties:
+            nome:
+              type: string
+            cpf:
+              type: string
+            cargo:
+              type: string
+            matricula:
+              type: string
+    responses:
+      200:
+        description: Tripulante adicionado
+    """
     db = SessionLocal()
     try:
         voo = buscar_voo(db, numero_voo)
         if not voo:
             return jsonify({"erro": "Voo não encontrado"}), 404
         
-        data = request.json()
+        data = request.get_json()
         nome = data.get("nome")
         cpf = data.get("cpf")
         cargo = data.get("cargo")
