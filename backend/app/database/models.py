@@ -30,7 +30,7 @@ class Voo(Base):
     companhia = relationship("CompanhiaAerea", back_populates="voos")
 
     passageiros = relationship("Passageiro", secondary="voo_passageiro", back_populates="voos")
-    tripulacao = relationship("Funcionario", secondary="voo_tripulante", back_populates="voos")
+    tripulacao = relationship("Funcionario", secondary="tripulantes_voo", back_populates="voos")
 
 class MiniAeronave(Base):
     __tablename__ = 'aeronaves'
@@ -54,10 +54,10 @@ class Passageiro(Base):
 
     id = Column(Integer, primary_key=True)
     nome = Column(String, nullable=False)
-    cpf = Column(Char(14), unique=True, nullable=False)
+    cpf = Column(String(14), unique=True, nullable=False)
 
-    voo_id = Column(Integer, ForeignKey('voos.id'))
     voos = relationship("Voo", back_populates="passageiros")
+    bagagens = relationship("Bagagem", back_populates="dono")
 
 class Bagagem(Base):
     __tablename__ = 'bagagens'
