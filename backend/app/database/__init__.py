@@ -24,7 +24,16 @@ class Voo(Base):
     destino = Column(String(50), nullable=False)
 
     aeronave_id = Column(Integer, ForeignKey("aeronaves.id"))
-    aeronave = relationship("MiniAeronave")
+    aeronave = relationship("MiniAeronave", back_populates="voos")
 
     passageiros = relationship("Passageiro", secondary="voo_passageiro")
     tripulacao = relationship("Funcionario", secondary="voo_tripulante")
+
+class MiniAeronave(Base):
+    __tablename__ = 'aeronaves'
+
+    id = Column(Integer, primary_key=True)
+    modelo = Column(String, nullable=False)
+    capacidade = Column(Integer, nullable=False)
+
+    voos = relationship("Voo", back_populates="aeronave")
