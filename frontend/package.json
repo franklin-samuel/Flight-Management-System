@@ -15,8 +15,11 @@
     "lucide-react": "^0.534.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.0",
+<<<<<<< HEAD
     "react-router": "^7.7.1",
 =======
+    "react-node": "^1.0.2",
+>>>>>>> 84dc527156aafc2cadb0cb9a79e80b4d135042ae
     "react-router-dom": "^7.7.1"
   },
   "devDependencies": {
