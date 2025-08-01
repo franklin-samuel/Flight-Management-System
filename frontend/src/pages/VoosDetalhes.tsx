@@ -88,7 +88,7 @@ export const VooDetalhes: React.FC = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           {passageirosMock.map((p) => (
-            <div key={p.id} className="flex items-center justify-between p-3 border rounded-md">
+            <div key={p.id} onClick={() => navigate(`/passageiros/${p.id}`)} className="flex items-center justify-between p-3 border rounded-md">
               <span className="text-gray-800">{p.nome}</span>
               <div className="flex items-center space-x-2 text-sm text-gray-600">
                 <Luggage className="w-4 h-4" />

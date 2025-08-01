@@ -1,8 +1,11 @@
 import { Card, CardContent, CardHeader } from "../components/ui/Card";
 import { Building2, Plane, Users, UserCheck } from 'lucide-react'
+import { useCompanhia } from "../context/companhiaContext";
 
 export default function Home() {
-  // Dados mockados para estatísticas
+  
+  const { companhia } = useCompanhia()
+
   const stats = [
     {
       title: 'Companhias Aéreas',

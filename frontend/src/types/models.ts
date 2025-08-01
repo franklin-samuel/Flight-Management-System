@@ -1,9 +1,10 @@
 export interface Companhia {
   id: number;
   nome: string;
+  voos: Voo[]
 }
 
-export interface MiniAeronave {
+export interface Aeronave {
   id: number;
   modelo: string;
   capacidade: number;
@@ -11,12 +12,10 @@ export interface MiniAeronave {
 
 export interface Voo {
   id: number;
-  companhiaId: number;
   numero_voo: string;
   origem: string;
   destino: string;
-  aeronave: MiniAeronave;
-  capacidade: number;
+  aeronave: Aeronave;
   passageiros: Passageiro[];
   tripulacao: Funcionario[];
 }
