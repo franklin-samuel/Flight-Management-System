@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Table
+from sqlalchemy import Column, Integer, String, ForeignKey, Table, Char
 from sqlalchemy.orm import relationship
 from database import Base
 
@@ -29,8 +29,8 @@ class Voo(Base):
     companhia_id = Column(Integer, ForeignKey("companhias.id"))
     companhia = relationship("CompanhiaAerea", back_populates="voos")
 
-    passageiros = relationship("Passageiro", secondary="voo_passageiro")
-    tripulacao = relationship("Funcionario", secondary="voo_tripulante")
+    passageiros = relationship("Passageiro", secondary="voo_passageiro", back_populates="voos")
+    tripulacao = relationship("Funcionario", secondary="voo_tripulante", back_populates="voos")
 
 class MiniAeronave(Base):
     __tablename__ = 'aeronaves'
@@ -49,4 +49,13 @@ class CompanhiaAerea(Base):
 
     voos = relationship("Voo", back_populates="companhia")
 
-    
+class Passageiro(Base):
+    __tablename__ = "passageiros"
+
+    id = Column(Integer, primary_key=True)
+    nome = Column(String, nullable=False)
+    cpf = Column(Char(14), unique=True, nullable=False)
+
+    voo_id = Column(Integer, ForeignKey('voos.id'))
+    voos = relationship("Voo", back_populates="passageiros")
+
