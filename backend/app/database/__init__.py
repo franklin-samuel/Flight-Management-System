@@ -59,3 +59,24 @@ class Passageiro(Base):
     voo_id = Column(Integer, ForeignKey('voos.id'))
     voos = relationship("Voo", back_populates="passageiros")
 
+class Bagagem(Base):
+    __tablename__ = 'bagagens'
+
+    id = Column(Integer, primary_key=True)
+    descricao = Column(String, nullable=False)
+    peso = Column(Integer, nullable=False)
+
+    passageiro_id = Column(Integer, ForeignKey('passageiros.id'))
+    dono = relationship("Passageiro", back_populates="bagagens")
+
+class Funcionario(Base):
+    __tablename__ = 'funcionarios'
+
+    id = Column(Integer, primary_key=True)
+    nome = Column(String, nullable=False)
+    cpf = Column(String, unique=True, nullable=False)
+    cargo = Column(String, nullable=False)
+    matricula = Column(String, unique=True,  nullable=False)
+
+    voos = relationship("Voo", secondary=tripulantes_voo, back_populates="tripulantes")
+
