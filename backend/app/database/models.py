@@ -1,6 +1,6 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Table, Char
+from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
-from database import Base
+from database.base import Base
 
 tripulantes_voo = Table(
     'tripulantes_voo',
@@ -16,7 +16,7 @@ voo_passageiro = Table(
 )
 
 class Voo(Base):
-    __tablename__ = 'Voos'
+    __tablename__ = 'voos'
 
     id = Column(Integer, primary_key=True)
     numero_voo = Column(String(10), nullable=False)
@@ -78,5 +78,5 @@ class Funcionario(Base):
     cargo = Column(String, nullable=False)
     matricula = Column(String, unique=True,  nullable=False)
 
-    voos = relationship("Voo", secondary=tripulantes_voo, back_populates="tripulantes")
+    voos = relationship("Voo", secondary=tripulantes_voo, back_populates="tripulacao")
 
