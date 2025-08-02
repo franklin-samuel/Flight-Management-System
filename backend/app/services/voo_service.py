@@ -21,11 +21,13 @@ def criar_voo(db: Session, numero_voo: str, origem: str, destino: str, aeronave_
     db.refresh(voo_db)
 
     return voo_from_db(voo_db)
+
 def buscar_voo(db: Session, numero_voo: str):
     voo_db = db.query(VooDB).filter_by(numero_voo=numero_voo).first()
     if voo_db:
         return voo_from_db(voo_db)
     return None
+
 #Expor função no método GET
 def listar_todos_voos(db: Session):
     voos_db = db.query(VooDB).all()
