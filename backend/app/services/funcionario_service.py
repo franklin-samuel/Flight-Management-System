@@ -14,3 +14,7 @@ def buscar_funcionario_por_matricula(db: Session, matricula: str):
     if not funcionario_db:
         return None
     return funcionario_from_db(funcionario_db)
+
+def listar_funcionarios(db: Session):
+    funcionarios_db = db.query(FuncionarioDB).all()
+    return [funcionario_from_db(funcionario) for funcionario in funcionarios_db]
