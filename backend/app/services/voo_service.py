@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from app.database.models import Voo as VooDB, Passageiro as PassageiroDB, Funcionario as FuncionarioDB, AeronaveDB
-from app.models.voo import Voo
 from app.models.pessoa import Passageiro, Funcionario
+from app.services.mappers.voo_mapper import voo_from_db
 import uuid
 
 #Expor Função no método POST
@@ -20,20 +20,17 @@ def criar_voo(db: Session, numero_voo: str, origem: str, destino: str, aeronave_
     db.commit()
     db.refresh(voo_db)
 
-    return Voo(voo_db)
+    return voo_from_db(voo_db)
 def buscar_voo(db: Session, numero_voo: str):
     voo_db = db.query(VooDB).filter_by(numero_voo=numero_voo).first()
     if voo_db:
-        return Voo(voo_db, db)
+        return voo_from_db(voo_db)
     return None
 #Expor função no método GET
 def listar_todos_voos(db: Session):
     voos_db = db.query(VooDB).all()
-    voos = []
-    for v in voos_db:
-        voo = Voo(v, db)
-        voos.append(voo)
-    return voos
+    return [voo_from_db(v) for v in voos_db]
+
 
 def adicionar_passageiro_ao_voo(db: Session, numero_voo: str, nome: str, cpf: str):
     voo_db = db.query(VooDB).filter_by(numero_voo=numero_voo).first()
@@ -51,18 +48,14 @@ def adicionar_passageiro_ao_voo(db: Session, numero_voo: str, nome: str, cpf: st
         voo_db.passageiros.append(passageiro_db)
         db.commit()
 
-    voo = Voo(voo_db, db)
-    passageiro_poo = Passageiro(nome=nome, cpf=cpf, db_session=db)
-    voo.adicionar_passageiro(passageiro_poo)
-
-    return voo
+    return voo_from_db(voo_db, db)
 
 def buscar_passageiro_por_cpf(db: Session, cpf: str):
     passageiro_db = db.query(PassageiroDB).filter_by(cpf=cpf).first()
     if not passageiro_db:
         raise ValueError("Passageiro não encontrado.")
 
-    passageiro_poo = Passageiro(passageiro_db.nome, passageiro_db.cpf, db_session=db)
+    passageiro_poo = Passageiro(nome=passageiro_db.nome, cpf=passageiro_db.cpf)
     return passageiro_poo
 
 def criar_funcionario(db: Session, numero_voo: str, nome: str, cpf: str, cargo: str, matricula: str):
@@ -93,13 +86,8 @@ def adicionar_tripulante_ao_voo(db: Session, numero_voo: str, funcionario_db: Fu
     db.commit()
     db.refresh(voo_db)
 
-    voo = Voo(voo_db, db)
-    tripulante_poo = criar_funcionario(
-        cargo=funcionario_db.cargo,
-        matricula=funcionario_db.matricula,
-        nome=funcionario_db.nome,
-        cpf=funcionario_db.cpf
-    )
-    voo.adicionar_tripulante(tripulante_poo)
+    voo_db.tripulacao.append(funcionario_db)
+    db.commit()
+    db.refresh(voo_db)
 
-    return voo
+    return voo_from_db(voo_db)
