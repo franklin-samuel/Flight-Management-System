@@ -1,11 +1,22 @@
-from flask import Flask
-from flasgger import Swagger
-from backend.app.api.voos import routes
+# app.py
 
-app = Flask(__name__)
-app.register_blueprint(routes)
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from app.api import passageiros, voos, funcionarios
+app = FastAPI(
+    title="API de Gestão de Voos",
+    version="1.0.0",
+    description="Backend para controle de voos, passageiros e tripulação"
+)
 
-swagger = Swagger(app)
+# Configurar CORS para permitir acesso do frontend (React, por exemplo)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # Samuel coloca o endereço frontend aqui cria
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
-if __name__ == "__main__":
-    app.run(debug=True)
+app.include_router(passageiros.router)
+app.include_router(voos.router)
