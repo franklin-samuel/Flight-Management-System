@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from database.base import Base
+import uuid
 
 tripulantes_voo = Table(
     'tripulantes_voo',
@@ -72,7 +73,7 @@ class Bagagem(Base):
 class Funcionario(Base):
     __tablename__ = 'funcionarios'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     nome = Column(String, nullable=False)
     cpf = Column(String, unique=True, nullable=False)
     cargo = Column(String, nullable=False)

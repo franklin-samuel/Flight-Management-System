@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
-from app.database.models import Voo as VooDB, Passageiro as PassageiroDB, AeronaveDB
+from app.database.models import Voo as VooDB, Passageiro as PassageiroDB, Funcionario as FuncionarioDB, AeronaveDB
 from app.models.voo import Voo
-from app.models.pessoa import Passageiro
+from app.models.pessoa import Passageiro, Funcionario
 
 #Expor Função no método POST
 def criar_voo(db: Session, numero_voo: str, origem: str, destino: str, aeronave_id: int):
@@ -20,7 +20,7 @@ def criar_voo(db: Session, numero_voo: str, origem: str, destino: str, aeronave_
     db.refresh(voo_db)
 
     return Voo(voo_db)
-def buscar_voo(db: Session, numero_voo: str)
+def buscar_voo(db: Session, numero_voo: str):
     voo_db = db.query(VooDB).filter_by(numero_voo=numero_voo).first()
     if voo_db:
         return Voo(voo_db, db)
@@ -63,3 +63,28 @@ def buscar_passageiro_por_cpf(db: Session, cpf: str):
 
     passageiro_poo = Passageiro(passageiro_db.nome, passageiro_db.cpf, db_session=db)
     return passageiro_poo
+
+def adicionar_tripulante_ao_voo(db: Session, numero_voo: str, nome: str, cpf: str, cargo: str, matricula: str):
+    voo_db = db.query(VooDB).filter_by(numero_voo=numero_voo).first()
+    if not voo_db:
+        raise ValueError("Voo não encontrado.")
+
+    funcionario_db = db.query(FuncionarioDB).filter_by(cpf=cpf).first()
+    if not funcionario_db:
+        funcionario_db = FuncionarioDB(nome=nome, cpf=cpf, cargo=cargo, matricula=matricula)
+        db.add(funcionario_db)
+        db.commit()
+        db.refresh(funcionario_db)
+
+    if funcionario_db in voo_db.tripulacao:
+        raise ValueError("Tripulante já está na tripulação.")
+
+    voo_db.tripulacao.append(funcionario_db)
+    db.commit()
+    db.refresh(voo_db)
+
+    voo = Voo(voo_db, db)
+    tripulante_poo = Funcionario(cargo=cargo, matricula=matricula, nome=nome, cpf=cpf)
+    voo.adicionar_tripulante(tripulante_poo)
+
+    return voo
