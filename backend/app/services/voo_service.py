@@ -51,23 +51,6 @@ def adicionar_passageiro_ao_voo(db: Session, numero_voo: str, nome: str, cpf: st
     return voo_from_db(voo_db, db)
 
 
-def criar_funcionario(db: Session, numero_voo: str, nome: str, cpf: str, cargo: str, matricula: str):
-
-    funcionario_poo = Funcionario(cargo=cargo, matricula=matricula, nome=nome, cpf=cpf) #id vai gerar la no construtor
-
-    funcionario_db = FuncionarioDB(
-        id=funcionario_poo.get_id(),
-        nome=funcionario_poo.nome,
-        cpf=funcionario_poo.cpf,
-        cargo=funcionario_poo.cargo,
-        matricula=funcionario_poo.matricula,
-    )
-    db.add(funcionario_db)
-    db.commit()
-    db.refresh(funcionario_db)
-
-    return funcionario_poo
-
 def adicionar_tripulante_ao_voo(db: Session, numero_voo: str, funcionario_db: FuncionarioDB):
     voo_db = db.query(VooDB).filter_by(numero_voo=numero_voo).first()
     if not voo_db:
