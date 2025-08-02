@@ -25,13 +25,16 @@ class Voo:
 
     def adicionar_passageiro(self, passageiro):
         if len(self.passageiros) >= self.aeronave.capacidade:
-            return
+            raise ValueError("Capacidade da aeronave excedida.")
         if any(p.cpf == passageiro.cpf for p in self.passageiros):
-            return
+            raise ValueError("Passageiro já presente no voo.")
         self.passageiros.append(passageiro)
 
     def adicionar_tripulante(self, tripulante):
-        self.tripulação.append(tripulante)
+        if any(t.cpf == tripulante.cpf for t in self.tripulacao):
+            raise ValueError("Tripulante já presente na tripulação.")
+
+        self.tripulacao.append(tripulante)
 
     def listar_passageiros(self):
         for passageiro in self.passageiros:
