@@ -1,6 +1,6 @@
 from flask import Flask
 from flasgger import Swagger
-from app.api.routes import routes
+from backend.app.api.voos import routes
 
 app = Flask(__name__)
 app.register_blueprint(routes)

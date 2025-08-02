@@ -1,5 +1,5 @@
 from flask import Flask
-from app.api.routes import routes
+from backend.app.api.voos import routes
 
 def create_app():
     app = Flask(__name__)
