@@ -82,18 +82,10 @@ def criar_funcionario(db: Session, numero_voo: str, nome: str, cpf: str, cargo: 
 
     return funcionario_poo
 
-def adicionar_tripulante_ao_voo(db: Session, numero_voo: str, nome: str, cpf: str, cargo: str, matricula: str):
+def adicionar_tripulante_ao_voo(db: Session, numero_voo: str, funcionario_db: FuncionarioDB):
     voo_db = db.query(VooDB).filter_by(numero_voo=numero_voo).first()
     if not voo_db:
         raise ValueError("Voo não encontrado.")
-
-    funcionario_db = db.query(FuncionarioDB).filter_by(cpf=cpf).first()
-    if not funcionario_db:
-        funcionario_db = FuncionarioDB(nome=nome, cpf=cpf, cargo=cargo, matricula=matricula)
-        db.add(funcionario_db)
-        db.commit()
-        db.refresh(funcionario_db)
-
     if funcionario_db in voo_db.tripulacao:
         raise ValueError("Tripulante já está na tripulação.")
 
@@ -102,7 +94,12 @@ def adicionar_tripulante_ao_voo(db: Session, numero_voo: str, nome: str, cpf: st
     db.refresh(voo_db)
 
     voo = Voo(voo_db, db)
-    tripulante_poo = Funcionario(cargo=cargo, matricula=matricula, nome=nome, cpf=cpf)
+    tripulante_poo = criar_funcionario(
+        cargo=funcionario_db.cargo,
+        matricula=funcionario_db.matricula,
+        nome=funcionario_db.nome,
+        cpf=funcionario_db.cpf
+    )
     voo.adicionar_tripulante(tripulante_poo)
 
     return voo
