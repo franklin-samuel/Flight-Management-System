@@ -1,5 +1,6 @@
 #Voo, Miniaeronave, Companhia Aérea
-
+from app.database.models import Voo as VooDB
+from app.database.models import Passageiro, Funcionario
             
 class MiniAeronave:
     """Objeto da composição dentro de Voo."""
@@ -11,20 +12,23 @@ class MiniAeronave:
         return f"{self.modelo} com capacidade para {self.capacidade} passageiros. "
 
 class Voo:
-    def __init__(self, numero_voo, origem, destino, aeronave: MiniAeronave):
-        self.numero_voo = numero_voo
-        self.origem = origem
-        self.destino = destino
-        self.aeronave = aeronave
-        self.passageiros = []
-        self.tripulação = []
+    def __init__(self, voo_db):
+        self._db = voo_db
+        self.numero_voo = voo_db.numero_voo
+        self.origem = voo_db.origem
+        self.destino = voo_db.destino
+        self.aeronave = MiniAeronave(voo_db.aeronave.modelo, voo_db.aeronave.capacidade)
+        self.passageiros = [Passageiro(p.nome, p.cpf) for p in voo_db.passageiros]
+        self.tripulacao = [Funcionario(f.cargo, f.matricula, f.nome, f.cpf) for f in voo_db.tripulacao]
+
         # implementar database nas listas 
 
     def adicionar_passageiro(self, passageiro):
         if len(self.passageiros) >= self.aeronave.capacidade:
             return
-        if passageiro not in self.passageiros:
-            self.passageiros.append(passageiro)
+        if any(p.cpf == passageiro.cpf for p in self.passageiros):
+            return
+        self.passageiros.append(passageiro)
 
     def adicionar_tripulante(self, tripulante):
         self.tripulação.append(tripulante)
