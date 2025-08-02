@@ -19,5 +19,14 @@ def criar(dados_voo: dict, db: Session = Depends(get_db)):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@router.get("")
+def listar(db: Session = Depends(get_db)):
+    return listar_todos_voos(db)
 
+@router.get("/{numero_voo}")
+def buscar(numero_voo: str, db: Session = Depends(get_db)):
+    voo = buscar_voo(db, numero_voo)
+    if not voo:
+        raise HTTPException(status_code=404, detail="Voo não encontrado")
+    return voo
     
