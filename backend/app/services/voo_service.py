@@ -1,45 +1,59 @@
-from app.database.crud import adicionar_voo, buscar_voo, listar_voos, buscar_passageiro, adicionar_passageiro
 from sqlalchemy.orm import Session
-from flask import request
-from app.models.voo import MiniAeronave
+from app.database.models import Voo as VooDB, Passageiro as PassageiroDB, AeronaveDB
+from app.models.voo import Voo
+from app.models.pessoa import Passageiro
 
 #Expor Função no método POST
-def criar_voo(db: Session, data):
-    numero_voo = data.get("numero_voo")
-    origem = data.get("origem")
-    destino = data.get("destino")
-    modelo = data.get("modelo")
-    capacidade = data.get("capacidade")
+def criar_voo(db: Session, numero_voo: str, origem: str, destino: str, aeronave_id: int):
+    aeronave = db.query(AeronaveDB).filter_by(id=aeronave_id).first()
+    if not aeronave:
+        raise ValueError("Aeronave não encontrada.")
 
-    if not all([numero_voo, origem, destino, modelo, capacidade]):
-        raise Exception("Campos obrigatórios ausentes")
-    
-    voo_existente = buscar_voo(db, numero_voo)
-    if voo_existente:
-        raise Exception(f"Voo {numero_voo} já existe.")
-    
-    aeronave = MiniAeronave(modelo=modelo, capacidade=int(capacidade))
+    voo_db = VooDB(
+        numero_voo=numero_voo,
+        origem=origem,
+        destino=destino,
+        aeronave_id=aeronave.id
+    )
+    db.add(voo_db)
+    db.commit()
+    db.refresh(voo_db)
 
-    novo_voo = adicionar_voo(db, numero_voo, origem, destino, aeronave)
-
-    return novo_voo
-
+    return Voo(voo_db)
+def buscar_voo(db: Session, numero_voo: str)
+    voo_db = db.query(VooDB).filter_by(numero_voo=numero_voo).first()
+    if voo_db:
+        return Voo(voo_db, db)
+    return None
 #Expor função no método GET
 def listar_todos_voos(db: Session):
-    return listar_voos(db)
+    voos_db = db.query(VooDB).all()
+    voos = []
+    for v in voos_db:
+        voo = Voo(v, db)
+        voos.append(voo)
+    return voos
 
-def adicionar_passageiro_ao_voo(db: Session, voo, passageiro):
-    if passageiro in voo.passageiros:
-        raise Exception("Passageiro já está no voo.")
-    
-    if len(voo.passageiros) >= voo.aeronave.capacidade:
-        raise Exception("Capacidade da aeronave atingida. Não é possível adicionar mais passageiros.")
-    
-    novo_passageiro = adicionar_passageiro(db, passageiro.nome, passageiro.cpf)
-    voo.passageiros.append(novo_passageiro)
-    
-    db.commit()
-    db.refresh(voo)
+def adicionar_passageiro_ao_voo(db: Session, numero_voo: str, nome: str, cpf: str):
+    voo_db = db.query(VooDB).filter_by(numero_voo=numero_voo).first()
+    if not voo_db:
+        raise ValueError("Voo não encontrado.")
+
+    passageiro_db = db.query(PassageiroDB).filter_by(cpf=cpf).first()
+    if not passageiro_db:
+        passageiro_db = PassageiroDB(nome=nome, cpf=cpf)
+        db.add(passageiro_db)
+        db.commit()
+        db.refresh(passageiro_db)
+
+    if passageiro_db not in voo_db.passageiros:
+        voo_db.passageiros.append(passageiro_db)
+        db.commit()
+
+    voo = Voo(voo_db, db)
+    passageiro_poo = Passageiro(nome=nome, cpf=cpf, db_session=db)
+    voo.adicionar_passageiro(passageiro_poo)
+
     return voo
 
 def buscar_passageiro_por_cpf(db: Session, cpf: str):
