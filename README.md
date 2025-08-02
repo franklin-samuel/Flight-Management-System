@@ -10,7 +10,7 @@ Criar um sistema capaz de:
 - Gerenciar passageiros, voos e tripulações
 - Realizar auditoria de voos
 - Persistir os dados com SQLite
-- Expor API REST com Flask
+- Expor API REST com FastAPI
 - Exibir interface amigável em React
 
 ---
@@ -19,7 +19,7 @@ Criar um sistema capaz de:
 
 ### 🐍 Backend
 - Python 3.11+
-- Flask
+- FastAPI
 - SQLAlchemy
 - SQLite
 - Pytest (testes)
