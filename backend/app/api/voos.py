@@ -3,10 +3,11 @@ from sqlalchemy.orm import Session
 from app.services.voo_service import criar_voo, buscar_voo, listar_todos_voos, adicionar_tripulante_ao_voo
 from app.services.funcionario_service import buscar_funcionario
 from app.database.session import get_db
+from app.models.voo import Voo
 
 router = APIRouter(prefix="/voos")
 
-@router.post("")
+@router.post("", response_model=Voo, status_code=201)
 def criar(dados_voo: dict, db: Session = Depends(get_db)):
     try:
         return criar_voo(
@@ -19,11 +20,11 @@ def criar(dados_voo: dict, db: Session = Depends(get_db)):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("")
+@router.get("", response_model=list[Voo])
 def listar(db: Session = Depends(get_db)):
     return listar_todos_voos(db)
 
-@router.get("/{numero_voo}")
+@router.get("/{numero_voo}", response_model=Voo)
 def buscar(numero_voo: str, db: Session = Depends(get_db)):
     voo = buscar_voo(db, numero_voo)
     if not voo:

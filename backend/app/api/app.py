@@ -20,3 +20,4 @@ app.add_middleware(
 
 app.include_router(passageiros.router)
 app.include_router(voos.router)
+app.include_router(funcionarios.router)
