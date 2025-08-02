@@ -1,5 +1,4 @@
 #Voo, Miniaeronave, Companhia Aérea
-from app.database.models import Voo as VooDB
 from app.database.models import Passageiro, Funcionario
             
 class MiniAeronave:

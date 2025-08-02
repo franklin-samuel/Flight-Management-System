@@ -1,6 +1,7 @@
 from app.models.mixins import IdentificavelMixin
 from app.models.interfaces import Logavel
 from app.models.bagagem import Bagagem
+from app.database.models import Passageiro as PassageiroDB
 
 class Pessoa:
     """Classe base para pessoas do sistema."""
@@ -21,12 +22,21 @@ class Pessoa:
     
 
 class Passageiro(Pessoa):
-    def __init__(self, nome: str, cpf: str):
+    def __init__(self, nome: str, cpf: str, db_session=None):
         super().__init__(nome, cpf)
         self.bagagens = []
+        self._db_session = db_session
 
     def adicionar_bagagem(self, bagagem: Bagagem):
         self.bagagens.append(bagagem)
+        if self._db_session:
+            passageiro_db = self._db_session.query(PassageiroDB).filter_by(cpf=self.cpf).first()
+            if passageiro_db:
+                nova_bagagem_db = bagagem.to_db_model()
+                nova_bagagem_db.dono = passageiro_db
+                self._db_session.add(nova_bagagem_db)
+                self._db_session.commit()
+
         
     def listar_bagagens(self):
         for bagagem in self.bagagens:
