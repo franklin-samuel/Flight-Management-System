@@ -50,13 +50,6 @@ def adicionar_passageiro_ao_voo(db: Session, numero_voo: str, nome: str, cpf: st
 
     return voo_from_db(voo_db, db)
 
-def buscar_passageiro_por_cpf(db: Session, cpf: str):
-    passageiro_db = db.query(PassageiroDB).filter_by(cpf=cpf).first()
-    if not passageiro_db:
-        raise ValueError("Passageiro não encontrado.")
-
-    passageiro_poo = Passageiro(nome=passageiro_db.nome, cpf=passageiro_db.cpf)
-    return passageiro_poo
 
 def criar_funcionario(db: Session, numero_voo: str, nome: str, cpf: str, cargo: str, matricula: str):
 
