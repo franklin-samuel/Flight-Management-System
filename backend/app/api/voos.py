@@ -29,4 +29,17 @@ def buscar(numero_voo: str, db: Session = Depends(get_db)):
     if not voo:
         raise HTTPException(status_code=404, detail="Voo não encontrado")
     return voo
+
+@router.post("/{numero_voo}/tripulacao")
+def adicionar_tripulante(numero_voo: str, cpf: str, db: Session = Depends(get_db)):
+    funcionario = buscar_funcionario(db, cpf)
+    if not funcionario:
+        raise HTTPException(status_code=404, detail="Funcionário não encontrado")
+
+    try:
+        return adicionar_tripulante_ao_voo(db, numero_voo, funcionario)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    
+
     
