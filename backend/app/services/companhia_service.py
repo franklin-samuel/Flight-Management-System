@@ -43,12 +43,17 @@ class CompanhiaService:
 
     def adicionar_voo_a_companhia(self, companhia_id: int, Voo):
         companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()
-        companhia_poo = CompanhiaAerea(nome=companhia.nome, voos=[voo for voo in companhia.voos])
+        companhia_poo = companhia_from_db(companhia)
         companhia_poo.adicionar_voo(Voo)
-        return companhia_to_db(companhia_poo)
+
+        companhia.voos = companhia_poo.voos
+        
+        self.db.commit()
+        self.db.refresh(companhia)
+        return companhia
 
     def buscar_voo(self, companhia_id: int, numero_voo: str):
         companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()
-        companhia_poo = CompanhiaAerea(nome=companhia.nome, voos=[voo for voo in companhia.voos])
+        companhia_poo = companhia_from_db(companhia)
         voo = companhia_poo.buscar_voo(numero_voo)
         return voo_to_db(voo)

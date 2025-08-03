@@ -3,6 +3,7 @@ from app.database.models import Voo as VooDB, Passageiro as PassageiroDB, Funcio
 from app.services.mappers.voo_mapper import voo_from_db
 from app.services.mappers.passageiro_mapper import passageiro_from_db
 from app.services.mappers.funcionario_mapper import funcionario_from_db
+from app.models.voo import Voo
 
 #Expor Função no método POST
 class VooService:

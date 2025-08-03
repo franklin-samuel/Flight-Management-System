@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.database.models import Passageiro as PassageiroDB
-from app.services.mappers.passageiro_mapper import passageiro_to_db, bagagem_to_db
+from app.services.mappers.passageiro_mapper import passageiro_to_db, bagagem_to_db, passageiro_from_db
 from app.models.pessoa import Passageiro
 class PassageiroService:
     def __init__(self, db: Session):
@@ -44,8 +44,11 @@ class PassageiroService:
         passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
         if not passageiro:
             raise ValueError ("Passageiro não encontrado")
-        passageiro_poo = Passageiro(nome=passageiro.nome, cpf=passageiro.cpf,
-                                    bagagens=[bagagem for bagagem in passageiro.bagagens])
+        passageiro_poo = passageiro_from_db(passageiro)
         passageiro_poo.adicionar_bagagem(bagagem)
-        
-        return passageiro_to_db(passageiro_poo)
+
+        passageiro.bagagens = passageiro_poo.bagagens
+
+        self.db.commit()
+        self.db.refresh(passageiro)
+        return passageiro
