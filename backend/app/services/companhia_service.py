@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from app.database.models import CompanhiaAerea as CompanhiaDB
 from app.services.mappers.companhia_mapper import companhia_from_db, companhia_to_db
 from app.models.voo import CompanhiaAerea
-from app.services.mappers.voo_mapper import voo_from_db
+from app.services.mappers.voo_mapper import voo_to_db
 class CompanhiaService:
     def __init__(self, db: Session):
         self.db = db
@@ -46,3 +46,9 @@ class CompanhiaService:
         companhia_poo = CompanhiaAerea(nome=companhia.nome, voos=[voo for voo in companhia.voos])
         companhia_poo.adicionar_voo(Voo)
         return companhia_to_db(companhia_poo)
+
+    def buscar_voo(self, companhia_id: int, numero_voo: str):
+        companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()
+        companhia_poo = CompanhiaAerea(nome=companhia.nome, voos=[voo for voo in companhia.voos])
+        voo = companhia_poo.buscar_voo(numero_voo)
+        return voo_to_db(voo)
