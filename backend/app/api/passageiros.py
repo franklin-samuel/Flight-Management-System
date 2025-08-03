@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.services.passageiro_service import PassageiroService
 from app.database.session import get_db
@@ -26,3 +26,11 @@ def buscar_passageiro_por_cpf(cpf: str, db: Session = Depends(get_db)):
     if not passageiro:
         raise HTTPException(status_code=404, detail="Passageiro não encontrado")
     return passageiro
+
+@router.delete("/{companhia_id}", status_code=status.HTTP_204_NO_CONTENT)
+def deletar_companhia(cpf: str, db: Session = Depends(get_db)):
+    service = PassageiroService(db)
+    try:
+        service.deletar_passageiro(cpf)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))

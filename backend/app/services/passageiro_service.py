@@ -27,3 +27,11 @@ class PassageiroService:
             raise ValueError ("Passageiro não encontrado")
         
         return [bagagem_from_db(bagagem) for bagagem in passageiro.bagagens]
+
+    def deletar_passageiro(self, cpf:str):
+        passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
+        if not passageiro:
+            raise ValueError ("Passageiro não encontrado")
+        
+        self.db.delete(passageiro)
+        self.db.commit()
