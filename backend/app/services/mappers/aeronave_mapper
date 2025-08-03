@@ -1,0 +1,11 @@
+from app.models.voo import MiniAeronave
+from app.database.models import MiniAeronave as AeronaveDB
+
+def aeronave_from_db(aeronave_db: AeronaveDB) -> MiniAeronave:
+    return MiniAeronave(
+        modelo=aeronave_db.modelo,
+        capacidade=aeronave_db.capacidade
+    )
+
+def aeronave_to_db(aeronave: MiniAeronave) -> AeronaveDB:
+    return AeronaveDB(modelo=aeronave.modelo, capacidade=aeronave.capacidade)

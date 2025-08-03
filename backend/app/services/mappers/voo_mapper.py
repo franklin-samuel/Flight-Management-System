@@ -1,9 +1,7 @@
-from app.database.models import Voo as VooDB
+from app.database.models import Voo as VooDB, MiniAeronave as MiniAeronaveDB, Passageiro as PassageiroDB, Funcionario as FuncionarioDB
 from app.models.voo import Voo
 from app.models.voo import MiniAeronave
 from app.models.pessoa import Passageiro
-from app.models.voo import MiniAeronave
-from app.database.models import MiniAeronave as AeronaveDB
 
 def voo_from_db(voo_db: VooDB) -> Voo:
     voo = Voo(
@@ -13,7 +11,7 @@ def voo_from_db(voo_db: VooDB) -> Voo:
         aeronave=MiniAeronave(
             modelo=voo_db.aeronave.modelo,
             capacidade=voo_db.aeronave.capacidade
-        )
+        ),
     )
     for p in voo_db.passageiros:
         voo.adicionar_passageiro(Passageiro(nome=p.nome, cpf=p.cpf))
@@ -21,8 +19,21 @@ def voo_from_db(voo_db: VooDB) -> Voo:
         voo.adicionar_funcionario(f.nome)
     return voo
 
-def aeronave_from_db(aeronave_db: AeronaveDB) -> MiniAeronave:
-    return MiniAeronave(
-        modelo=aeronave_db.modelo,
-        capacidade=aeronave_db.capacidade
+def voo_to_db(voo: Voo) -> VooDB:
+    voo_db = VooDB(
+        numero_voo=voo.numero_voo,
+        origem=voo.origem,
+        destino=voo.destino,
+        aeronave=MiniAeronaveDB(
+            modelo=voo.aeronave.modelo,
+            capacidade=voo.aeronave.capacidade
+        ),
+        passageiros=[
+            PassageiroDB(nome=p.nome, cpf=p.cpf) for p in voo.passageiros
+        ],
+        funcionarios=[
+            FuncionarioDB(nome=f.nome, cpf=f.cpf, cargo=f.cargo, matricula=f.matricula)
+            for f in voo.funcionarios
+        ]
     )
+    return voo_db

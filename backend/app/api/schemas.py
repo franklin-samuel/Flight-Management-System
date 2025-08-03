@@ -11,14 +11,13 @@ class VooCreate(VooBase):
     pass
 
 class VooRead(VooBase):
-    id: int
+    pass
 
     model_config = {
         "from_attributes": True
     }
 
 class FuncionarioRead(BaseModel):
-    id: int
     nome: str
     matricula: str
 
@@ -27,7 +26,6 @@ class FuncionarioRead(BaseModel):
     }
 
 class PassageiroRead(BaseModel):
-    id: int
     nome: str
     cpf: str
 
@@ -36,7 +34,6 @@ class PassageiroRead(BaseModel):
     }
 
 class BagagemRead(BaseModel):
-    id: int
     peso: float
     descricao: Optional[str]
 
@@ -51,7 +48,7 @@ class CompanhiaCreate(CompanhiaBase):
     pass
 
 class CompanhiaRead(CompanhiaBase):
-    id: int
+    pass
 
     model_config = {
         "from_attributes": True
@@ -65,7 +62,7 @@ class AeronaveCreate(AeronaveBase):
     pass
 
 class AeronaveRead(AeronaveBase):
-    id: int
+    pass
     
     model_config = {
         "from_attributes": True

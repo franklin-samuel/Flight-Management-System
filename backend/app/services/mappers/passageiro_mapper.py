@@ -14,3 +14,15 @@ def bagagem_from_db(bagagem_db: BagagemDB) -> Bagagem:
         descricao=bagagem_db.descricao,
         peso=bagagem_db.peso
     )
+
+def aeronave_to_db(passageiro_db: Passageiro) -> PassageiroDB:
+        return PassageiroDB(
+        nome=passageiro_db.nome,
+        cpf=passageiro_db.cpf
+    )
+
+def bagagem_from_db(bagagem_db: Bagagem) -> BagagemDB:
+    return BagagemDB(
+        descricao=bagagem_db.descricao,
+        peso=bagagem_db.peso
+    )
