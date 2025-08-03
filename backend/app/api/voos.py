@@ -19,7 +19,6 @@ def criar(dados_voo: VooCreate, db: Session = Depends(get_db)):
     service = VooService(db)
     try:
         return service.criar_voo(
-            db,
             numero_voo=dados_voo["numero_voo"],
             origem=dados_voo["origem"],
             destino=dados_voo["destino"],
@@ -31,12 +30,12 @@ def criar(dados_voo: VooCreate, db: Session = Depends(get_db)):
 @router.get("", response_model=list[Voo])
 def listar(db: Session = Depends(get_db)):
     service = VooService(db)
-    return service.listar_todos_voos(db)
+    return service.listar_todos_voos()
 
 @router.get("/{numero_voo}", response_model=Voo)
 def buscar(numero_voo: str, db: Session = Depends(get_db)):
     service = VooService(db)
-    voo = service.buscar_voo(db, numero_voo)
+    voo = service.buscar_voo( numero_voo)
     if not voo:
         raise HTTPException(status_code=404, detail="Voo não encontrado")
     return voo
@@ -45,12 +44,12 @@ def buscar(numero_voo: str, db: Session = Depends(get_db)):
 def adicionar_tripulante(numero_voo: str, matricula: str, db: Session = Depends(get_db)):
     service = VooService(db)
     fservice = FuncionarioService(db)
-    funcionario = fservice.buscar_funcionario_por_matricula(db, matricula)
+    funcionario = fservice.buscar_funcionario_por_matricula(matricula)
     if not funcionario:
         raise HTTPException(status_code=404, detail="Funcionário não encontrado")
 
     try:
-        return service.adicionar_tripulante_ao_voo(db, numero_voo, funcionario)
+        return service.adicionar_tripulante_ao_voo(numero_voo, funcionario)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     
