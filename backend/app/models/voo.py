@@ -3,9 +3,10 @@ from app.models.pessoa import Passageiro
 
 class MiniAeronave:
     """Objeto da composição dentro de Voo."""
-    def __init__(self, modelo: str, capacidade: int):
+    def __init__(self, modelo: str, capacidade: int, voos=None):
         self.modelo = modelo 
         self.capacidade = capacidade 
+        self.voos = voos or []
     
     def resumo_voo(self):
         return f"{self.modelo} com capacidade para {self.capacidade} passageiros. "

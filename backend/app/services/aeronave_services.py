@@ -11,16 +11,16 @@ class AeronaveService:
         self.db.add(nova)
         self.db.commit()
         self.db.refresh(nova)
-        return aeronave_from_db(nova)    
+        return nova
     
     def listar_aeronaves(self):
         Aeronaves = self.db.query(MiniAeronaveDB).all()
-        return [aeronave_from_db(aeronave)for aeronave in Aeronaves]
+        return [aeronave for aeronave in Aeronaves]
     
     def buscar_aeronave(self, modelo: str):
         aeronave = self.db.query(MiniAeronaveDB).filter_by(modelo=modelo).first()
         if aeronave:
-            return aeronave_from_db(aeronave)
+            return aeronave
         return None
     
     def deletar_aeronave(self, modelo: str):
