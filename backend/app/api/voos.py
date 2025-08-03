@@ -61,7 +61,7 @@ def adicionar_passageiro(numero_voo: str, cpf: str, db: Session = Depends(get_db
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/{numero_voo}/tripulacao")
+@router.get("/{numero_voo}/tripulacao", response_model=list[FuncionarioRead])
 def listar_tripulacao(numero_voo: str, db: Session = Depends(get_db)):
     service = VooService(db)
     tripulacao = service.listar_funcionarios_por_voo(numero_voo)
@@ -69,7 +69,7 @@ def listar_tripulacao(numero_voo: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Tripulacao não encontrada")
     return tripulacao
 
-@router.get("/{numero_voo}/passageiros")
+@router.get("/{numero_voo}/passageiros", response_model=list[PassageiroRead])
 def listar_passageiros(numero_voo: str, db: Session = Depends(get_db)):
     service = VooService(db)
     passageiros = service.listar_passageiros_por_voo(numero_voo)
@@ -77,7 +77,7 @@ def listar_passageiros(numero_voo: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Passageiros não encontrados")
     return passageiros
 
-@router.get("/{numero_voo}/{cpf}/bagagens")
+@router.get("/{numero_voo}/{cpf}/bagagens", response_model=list[BagagemRead])
 def listar_bagagens(numero_voo: str, cpf: str, db: Session = Depends(get_db)):
     service = PassageiroService(db)
     bagagens = service.listar_bagagem_por_passageiro(cpf)
