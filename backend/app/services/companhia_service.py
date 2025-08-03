@@ -5,7 +5,7 @@ from app.services.mappers.voo_mapper import voo_from_db
 class CompanhiaService:
     def __init__(self, db: Session):
         self.db = db
-    def criar_companhia(self, db: Session, nome: str):
+    def criar_companhia(self, nome: str):
         nova = CompanhiaDB(nome=nome)
         self.db.add(nova)
         self.db.commit()
@@ -16,20 +16,20 @@ class CompanhiaService:
         companhias = self.db.query(CompanhiaDB).all()
         return [companhia_from_db(c) for c in companhias]
 
-    def buscar_companhia_por_id(self, db: Session, companhia_id: int):
+    def buscar_companhia_por_id(self, companhia_id: int):
         companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()
         if companhia:
             return companhia_from_db(companhia)
         return None
 
-    def deletar_companhia(self, db: Session, companhia_id: int):
+    def deletar_companhia(self, companhia_id: int):
         companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()
         if not companhia:
             raise ValueError("Companhia não encontrada.")
         self.db.delete(companhia)
         self.db.commit()
 
-    def listar_voos_por_companhia(self, db: Session, companhia_id: int):
+    def listar_voos_por_companhia(self, companhia_id: int):
         companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()
         if not companhia:
             raise ValueError("Companhia não encontrada.")

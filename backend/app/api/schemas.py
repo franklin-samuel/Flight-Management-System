@@ -39,3 +39,15 @@ class BagagemRead(BaseModel):
 
     class Config:
         orm_mode = True
+
+class CompanhiaBase(BaseModel):
+    nome: str
+
+class CompanhiaCreate(CompanhiaBase):
+    pass
+
+class CompanhiaRead(CompanhiaBase):
+    id: int
+
+    class Config:
+        orm_mode = True
