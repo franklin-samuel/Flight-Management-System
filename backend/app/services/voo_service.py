@@ -1,8 +1,8 @@
 from sqlalchemy.orm import Session
 from app.database.models import Voo as VooDB, Passageiro as PassageiroDB, Funcionario as FuncionarioDB, AeronaveDB
-from app.models.pessoa import Passageiro, Funcionario
 from app.services.mappers.voo_mapper import voo_from_db
-import uuid
+from app.services.mappers.passageiro_mapper import passageiro_from_db
+from app.services.mappers.funcionario_mapper import funcionario_from_db
 
 #Expor Função no método POST
 class VooService:
@@ -68,3 +68,17 @@ class VooService:
         self.db.refresh(voo_db)
 
         return voo_from_db(voo_db)
+    
+    def listar_passageiros_por_voo(self, numero_voo: str):
+        voos = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
+        if not voos:
+            raise ValueError("Voo não encontrado.")
+
+        return [passageiro_from_db(passageiro) for passageiro in voos.passageiros]
+
+    def listar_funcionarios_por_voo(self, numero_voo: str):
+        voos = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
+        if not voos:
+            raise ValueError("Voo não encontrado.")
+        
+        return [funcionario_from_db(funcionario) for funcionario in voos.tripulacao]
