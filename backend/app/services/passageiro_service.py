@@ -35,3 +35,4 @@ class PassageiroService:
         
         self.db.delete(passageiro)
         self.db.commit()
+        return True

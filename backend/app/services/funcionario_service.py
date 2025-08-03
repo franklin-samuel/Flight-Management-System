@@ -22,9 +22,9 @@ class FuncionarioService:
         return [funcionario_from_db(funcionario) for funcionario in funcionarios_db]
 
     def deletar_funcionario(self, id: int) -> bool:
-            funcionario = self.db.query(FuncionarioDB).filter_by(id=id).first()
-            if not funcionario:
-                return False
-            self.db.delete(funcionario)
-            self.db.commit()
-            return True
+        funcionario = self.db.query(FuncionarioDB).filter_by(id=id).first()
+        if not funcionario:
+            return False
+        self.db.delete(funcionario)
+        self.db.commit()
+        return True
