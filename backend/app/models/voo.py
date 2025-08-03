@@ -40,14 +40,14 @@ class Voo:
 
 class CompanhiaAerea:
     """Agrupa seus voos (has-a)."""
-    def __init__(self, nome: str):
+    def __init__(self, nome: str, voos=None):
         nome = nome.strip()
         
         if len(nome) < 3:
             raise ValueError("o nome da companhia deve ter pelo menos 3 letras.")
         
         self._nome = nome
-        self._voos = []
+        self._voos = voos or []
     
     @property
     def nome(self):

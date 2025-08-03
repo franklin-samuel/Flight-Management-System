@@ -1,25 +1,28 @@
 from sqlalchemy.orm import Session
 from app.database.models import CompanhiaAerea as CompanhiaDB
-from app.services.mappers.companhia_mapper import companhia_from_db
+from app.services.mappers.companhia_mapper import companhia_from_db, companhia_to_db
+from app.models.voo import CompanhiaAerea
 from app.services.mappers.voo_mapper import voo_from_db
 class CompanhiaService:
     def __init__(self, db: Session):
         self.db = db
     def criar_companhia(self, nome: str):
-        nova = CompanhiaDB(nome=nome)
-        self.db.add(nova)
-        self.db.commit()
-        self.db.refresh(nova)
-        return companhia_from_db(nova)
+        companhia = CompanhiaAerea(nome=nome)
+        companhia_db = companhia_to_db(companhia)
 
+        self.db.add(companhia_db)
+        self.db.commit()
+        self.db.refresh(companhia_db)
+
+        return companhia_db
     def listar_todas_companhias(self):
         companhias = self.db.query(CompanhiaDB).all()
-        return [companhia_from_db(c) for c in companhias]
+        return companhias
 
     def buscar_companhia_por_id(self, companhia_id: int):
         companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()
         if companhia:
-            return companhia_from_db(companhia)
+            return companhia
         return None
 
     def deletar_companhia(self, companhia_id: int):
@@ -35,6 +38,11 @@ class CompanhiaService:
         if not companhia:
             raise ValueError("Companhia não encontrada.")
 
-        return [voo_from_db(voo) for voo in companhia.voos]
+        return [voo for voo in companhia.voos]
     
-    
+
+    def adicionar_voo_a_companhia(self, companhia_id: int, Voo):
+        companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()
+        companhia_poo = CompanhiaAerea(nome=companhia.nome, voos=[voo for voo in companhia.voos])
+        companhia_poo.adicionar_voo(Voo)
+        return companhia_to_db(companhia_poo)
