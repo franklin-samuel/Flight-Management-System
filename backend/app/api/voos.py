@@ -1,16 +1,24 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
-from app.services.voo_service import criar_voo, buscar_voo, listar_todos_voos, adicionar_tripulante_ao_voo
-from app.services.funcionario_service import buscar_funcionario
+from app.services.voo_service import VooService
+from app.services.funcionario_service import FuncionarioService
 from app.database.session import get_db
 from app.models.voo import Voo
+from pydantic import BaseModel
 
 router = APIRouter(prefix="/voos")
 
+class VooCreate(BaseModel):
+    numero_voo: str
+    origem: str
+    destino: str
+    aeronave_id: int
+
 @router.post("", response_model=Voo, status_code=201)
-def criar(dados_voo: dict, db: Session = Depends(get_db)):
+def criar(dados_voo: VooCreate, db: Session = Depends(get_db)):
+    service = VooService(db)
     try:
-        return criar_voo(
+        return service.criar_voo(
             db,
             numero_voo=dados_voo["numero_voo"],
             origem=dados_voo["origem"],
@@ -22,23 +30,27 @@ def criar(dados_voo: dict, db: Session = Depends(get_db)):
 
 @router.get("", response_model=list[Voo])
 def listar(db: Session = Depends(get_db)):
-    return listar_todos_voos(db)
+    service = VooService(db)
+    return service.listar_todos_voos(db)
 
 @router.get("/{numero_voo}", response_model=Voo)
 def buscar(numero_voo: str, db: Session = Depends(get_db)):
-    voo = buscar_voo(db, numero_voo)
+    service = VooService(db)
+    voo = service.buscar_voo(db, numero_voo)
     if not voo:
         raise HTTPException(status_code=404, detail="Voo não encontrado")
     return voo
 
 @router.post("/{numero_voo}/tripulacao")
-def adicionar_tripulante(numero_voo: str, cpf: str, db: Session = Depends(get_db)):
-    funcionario = buscar_funcionario(db, cpf)
+def adicionar_tripulante(numero_voo: str, matricula: str, db: Session = Depends(get_db)):
+    service = VooService(db)
+    fservice = FuncionarioService(db)
+    funcionario = fservice.buscar_funcionario_por_matricula(db, matricula)
     if not funcionario:
         raise HTTPException(status_code=404, detail="Funcionário não encontrado")
 
     try:
-        return adicionar_tripulante_ao_voo(db, numero_voo, funcionario)
+        return service.adicionar_tripulante_ao_voo(db, numero_voo, funcionario)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     
