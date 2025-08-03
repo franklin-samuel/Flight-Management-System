@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from app.api import passageiros, voos, funcionarios
+from app.api import passageiros, voos, tripulacao, companhias, aeronaves
 app = FastAPI(
     title="API de Gestão de Voos",
     version="1.0.0",
@@ -20,4 +20,6 @@ app.add_middleware(
 
 app.include_router(passageiros.router)
 app.include_router(voos.router)
-app.include_router(funcionarios.router)
+app.include_router(tripulacao.router)
+app.include_router(companhias.router)
+app.include_router(aeronaves.router)

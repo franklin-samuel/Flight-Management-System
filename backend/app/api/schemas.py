@@ -51,3 +51,16 @@ class CompanhiaRead(CompanhiaBase):
 
     class Config:
         orm_mode = True
+
+class AeronaveBase(BaseModel):
+    modelo: str
+    capacidade: int
+
+class AeronaveCreate(AeronaveBase):
+    pass
+
+class AeronaveRead(AeronaveBase):
+    id: int
+    
+    class Config:
+        orm_mode = True
