@@ -5,17 +5,11 @@ from app.services.funcionario_service import FuncionarioService
 from app.services.passageiro_service import PassageiroService
 from app.database.session import get_db
 from app.models.voo import Voo
-from pydantic import BaseModel
+from app.api.schemas.voo_schema import VooCreate, VooRead
 
 router = APIRouter(prefix="/voos")
 
-class VooCreate(BaseModel):
-    numero_voo: str
-    origem: str
-    destino: str
-    aeronave_id: int
-
-@router.post("", response_model=Voo, status_code=201)
+@router.post("", response_model=VooRead, status_code=201)
 def criar(dados_voo: VooCreate, db: Session = Depends(get_db)):
     service = VooService(db)
     try:
@@ -28,15 +22,15 @@ def criar(dados_voo: VooCreate, db: Session = Depends(get_db)):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("", response_model=list[Voo])
+@router.get("", response_model=list[VooRead])
 def listar(db: Session = Depends(get_db)):
     service = VooService(db)
     return service.listar_todos_voos()
 
-@router.get("/{numero_voo}", response_model=Voo)
+@router.get("/{numero_voo}", response_model=VooRead)
 def buscar(numero_voo: str, db: Session = Depends(get_db)):
     service = VooService(db)
-    voo = service.buscar_voo( numero_voo)
+    voo = service.buscar_voo(numero_voo)
     if not voo:
         raise HTTPException(status_code=404, detail="Voo não encontrado")
     return voo
