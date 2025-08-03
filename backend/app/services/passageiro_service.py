@@ -1,6 +1,6 @@
 from sqlalchemy.orm import Session
 from app.database.models import Passageiro as PassageiroDB
-from app.services.mappers.passageiro_mapper import passageiro_from_db
+from app.services.mappers.passageiro_mapper import passageiro_from_db, bagagem_from_db
 class PassageiroService:
     def __init__(self, db: Session):
         self.db = db
@@ -20,3 +20,11 @@ class PassageiroService:
         if not passageiro_db:
             return None
         return passageiro_from_db(passageiro_db)
+    
+    def listar_bagagem_por_passageiro(self, cpf:str):
+        passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
+        if not passageiro:
+            raise ValueError ("Passageiro não encontrado")
+        
+
+        return [bagagem_from_db(bagagem) for bagagem in passageiro.bagagens]
