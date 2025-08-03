@@ -4,7 +4,7 @@ from app.services.mappers.passageiro_mapper import passageiro_from_db, bagagem_f
 class PassageiroService:
     def __init__(self, db: Session):
         self.db = db
-    def criar_funcionario(self, nome: str, cpf: str):
+    def criar_passageiro(self, nome: str, cpf: str):
         passageiro_db = PassageiroDB(nome=nome, cpf=cpf)
         self.db.add(passageiro_db)
         self.db.commit()
