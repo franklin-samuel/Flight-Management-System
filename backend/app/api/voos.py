@@ -7,7 +7,7 @@ from app.database.session import get_db
 from app.models.voo import Voo
 from app.api.schemas import VooCreate, VooRead, PassageiroRead, FuncionarioRead, BagagemRead
 
-router = APIRouter(prefix="/voos")
+router = APIRouter(prefix="/voos", tags=["Voos"])
 
 @router.post("", response_model=VooRead, status_code=201)
 def criar(dados_voo: VooCreate, db: Session = Depends(get_db)):

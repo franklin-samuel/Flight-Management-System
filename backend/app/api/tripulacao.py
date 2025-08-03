@@ -4,7 +4,7 @@ from app.database.session import get_db
 from app.services.funcionario_service import FuncionarioService
 from app.api.schemas import FuncionarioRead
 
-router = APIRouter()
+router = APIRouter(prefix="/tripulacao", tags=["Tripulacao"])
 
 @router.get("/", response_model=list[FuncionarioRead])
 def listar_funcionarios(db: Session = Depends(get_db)):

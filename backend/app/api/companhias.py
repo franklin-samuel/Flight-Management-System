@@ -4,7 +4,7 @@ from app.services.companhia_service import CompanhiaService
 from app.database.session import get_db
 from app.api.schemas import CompanhiaCreate, CompanhiaRead, VooRead
 
-router = APIRouter(prefix="/companhias")
+router = APIRouter(prefix="/companhias", tags=["Companhias"])
 
 @router.post("", response_model=CompanhiaRead, status_code=201)
 def criar_companhia(dados: CompanhiaCreate, db: Session = Depends(get_db)):
