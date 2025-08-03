@@ -13,32 +13,36 @@ class VooCreate(VooBase):
 class VooRead(VooBase):
     id: int
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class FuncionarioRead(BaseModel):
     id: int
     nome: str
     matricula: str
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class PassageiroRead(BaseModel):
     id: int
     nome: str
     cpf: str
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class BagagemRead(BaseModel):
     id: int
     peso: float
     descricao: Optional[str]
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class CompanhiaBase(BaseModel):
     nome: str
@@ -49,8 +53,9 @@ class CompanhiaCreate(CompanhiaBase):
 class CompanhiaRead(CompanhiaBase):
     id: int
 
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }
 
 class AeronaveBase(BaseModel):
     modelo: str
@@ -62,5 +67,6 @@ class AeronaveCreate(AeronaveBase):
 class AeronaveRead(AeronaveBase):
     id: int
     
-    class Config:
-        orm_mode = True
+    model_config = {
+        "from_attributes": True
+    }

@@ -11,9 +11,10 @@ tripulantes_voo = Table(
 )
 
 voo_passageiro = Table(
-    'voo_passageiro', Base.metadata,
-    Column('voo_id', ForeignKey('voos.id'), primary_key=True),
-    Column('passageiro_id', ForeignKey('passageiros.id'), primary_key=True)
+    'voo_passageiro', 
+    Base.metadata,
+    Column('voo_id', Integer, ForeignKey('voos.id'), primary_key=True),
+    Column('passageiro_id', Integer, ForeignKey('passageiros.id'), primary_key=True)
 )
 
 class Voo(Base):
@@ -57,7 +58,7 @@ class Passageiro(Base):
     nome = Column(String, nullable=False)
     cpf = Column(String(14), unique=True, nullable=False)
 
-    voos = relationship("Voo", back_populates="passageiros")
+    voos = relationship("Voo", secondary="voo_passageiro", back_populates="passageiros")
     bagagens = relationship("Bagagem", back_populates="dono")
 
 class Bagagem(Base):
