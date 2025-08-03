@@ -68,7 +68,18 @@ class VooService:
         self.db.refresh(voo_db)
 
         return voo_from_db(voo_db)
-    
+    def adicionar_passageiro_ao_voo(self, numero_voo: str, passageiro_db: PassageiroDB):
+        voo_db = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
+        if not voo_db:
+            raise ValueError("Voo não encontrado.")
+        if passageiro_db in voo_db.passageiros:
+            raise ValueError("Passageiro já está na tripulação.")
+
+        voo_db.tripulacao.append(passageiro_db)
+        self.db.commit()
+        self.db.refresh(voo_db)
+
+        return voo_from_db(voo_db)
     def listar_passageiros_por_voo(self, numero_voo: str):
         voos = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
         if not voos:

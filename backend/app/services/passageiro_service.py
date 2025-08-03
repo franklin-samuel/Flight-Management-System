@@ -26,5 +26,4 @@ class PassageiroService:
         if not passageiro:
             raise ValueError ("Passageiro não encontrado")
         
-
         return [bagagem_from_db(bagagem) for bagagem in passageiro.bagagens]
