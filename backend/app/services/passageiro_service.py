@@ -1,7 +1,8 @@
 from sqlalchemy.orm import Session
-from app.database.models import Passageiro as PassageiroDB
+from app.database.models import Passageiro as PassageiroDB, Bagagem as BagagemDB
 from app.services.mappers.passageiro_mapper import passageiro_to_db, bagagem_to_db, passageiro_from_db
 from app.models.pessoa import Passageiro
+from app.models.bagagem import Bagagem
 class PassageiroService:
     def __init__(self, db: Session):
         self.db = db
@@ -26,8 +27,7 @@ class PassageiroService:
         passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
         if not passageiro:
             raise ValueError ("Passageiro não encontrado")
-        passageiro_poo = Passageiro(nome=passageiro.nome, cpf=passageiro.cpf,
-                                    bagagens=[bagagem for bagagem in passageiro.bagagens])
+        passageiro_poo = passageiro_from_db(passageiro)
         bagagens = passageiro_poo.listar_bagagens()
 
         return [bagagem_to_db(bagagem)for bagagem in bagagens]
@@ -40,10 +40,11 @@ class PassageiroService:
         self.db.delete(passageiro)
         self.db.commit()
 
-    def adicionar_bagagem(self, cpf:str, bagagem):
+    def adicionar_bagagem(self, cpf:str, descricao: str, peso: float):
         passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
         if not passageiro:
             raise ValueError ("Passageiro não encontrado")
+        bagagem = Bagagem(descricao, peso)
         passageiro_poo = passageiro_from_db(passageiro)
         passageiro_poo.adicionar_bagagem(bagagem)
 
@@ -52,3 +53,14 @@ class PassageiroService:
         self.db.commit()
         self.db.refresh(passageiro)
         return passageiro
+
+    def deletar_bagagem(self, cpf:str, bagagem_id: int):
+        passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
+        if not passageiro:
+            raise ValueError ("Passageiro não encontrado")
+        bagagem = self.db.query(BagagemDB).filter_by(bagagem_id=id).first()
+        if bagagem in passageiro.bagagens:
+            self.db.remove(bagagem)
+            self.db.commit()
+
+        return

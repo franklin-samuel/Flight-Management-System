@@ -24,8 +24,13 @@ class AeronaveService:
         return None
     
     def deletar_aeronave(self, modelo: str):
+
         aeronave = self.db.query(MiniAeronaveDB).filter_by(modelo=modelo).first()
         if not aeronave:
             raise ValueError("Aeronave não encontrada.")
         self.db.delete(aeronave)
         self.db.commit()
+
+    def listar_voos_da_aeronave(self):
+        Aeronaves = self.db.query(MiniAeronaveDB).all()
+        return [aeronave for aeronave in Aeronaves.voos]

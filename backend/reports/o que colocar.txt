@@ -1,1 +1,22 @@
 aqui vão ficar os arquivos relatórios que serão gerados em PDF
+
+rotas faltantes
+
+voos=[
+    rota delete para deletar funcionario do voo
+    rota delete para deletar passageiro do voo
+]
+
+passageiros=[
+    rota post para adicionar bagagens do passageiro
+    rota delete para deletar bagagem do passageiro
+]
+
+companhia=[
+    rota post para adicionar voo a companhia
+    rota get para buscar voo na companhia
+]
+
+aeronave=[
+    rota get para listar voos da aeronave
+]
