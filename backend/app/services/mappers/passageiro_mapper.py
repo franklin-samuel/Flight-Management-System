@@ -6,7 +6,8 @@ from app.database.models import Bagagem as BagagemDB
 def passageiro_from_db(passageiro_db: PassageiroDB) -> Passageiro:
     return Passageiro(
         nome=passageiro_db.nome,
-        cpf=passageiro_db.cpf
+        cpf=passageiro_db.cpf,
+        bagagens=[bagagem for bagagem in passageiro_db.bagagens]
     )
 
 def bagagem_from_db(bagagem_db: BagagemDB) -> Bagagem:
@@ -15,10 +16,12 @@ def bagagem_from_db(bagagem_db: BagagemDB) -> Bagagem:
         peso=bagagem_db.peso
     )
 
-def aeronave_to_db(passageiro_db: Passageiro) -> PassageiroDB:
+def passageiro_to_db(passageiro_db: Passageiro) -> PassageiroDB:
         return PassageiroDB(
         nome=passageiro_db.nome,
-        cpf=passageiro_db.cpf
+        cpf=passageiro_db.cpf,
+        bagagens=[bagagem for bagagem in passageiro_db.bagagens]
+
     )
 
 def bagagem_from_db(bagagem_db: Bagagem) -> BagagemDB:

@@ -17,16 +17,18 @@ class Pessoa:
     
 
 class Passageiro(Pessoa):
-    def __init__(self, nome: str, cpf: str):
+    def __init__(self, nome: str, cpf: str, bagagens=None):
         super().__init__(nome, cpf)
-        self.bagagens = []
+        self.bagagens = bagagens or []
 
     def adicionar_bagagem(self, bagagem: Bagagem):
         self.bagagens.append(bagagem)
         
     def listar_bagagens(self):
+        bagagens = []
         for bagagem in self.bagagens:
-            print(bagagem)
+            bagagens.append(bagagem)
+            return bagagens
 
 class Funcionario(Pessoa, IdentificavelMixin, Logavel):
     def __init__(self, cargo: str, matricula: str, nome: str, cpf: str):
