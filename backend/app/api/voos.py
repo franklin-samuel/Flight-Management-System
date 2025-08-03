@@ -5,7 +5,7 @@ from app.services.funcionario_service import FuncionarioService
 from app.services.passageiro_service import PassageiroService
 from app.database.session import get_db
 from app.models.voo import Voo
-from app.api.schemas.voo_schema import VooCreate, VooRead
+from app.api.schemas import VooCreate, VooRead, PassageiroRead, FuncionarioRead, BagagemRead
 
 router = APIRouter(prefix="/voos")
 
