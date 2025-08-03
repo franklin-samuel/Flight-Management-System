@@ -68,18 +68,7 @@ class VooService:
         self.db.refresh(voo_db)
 
         return voo_from_db(voo_db)
-    def adicionar_passageiro_ao_voo(self, numero_voo: str, passageiro_db: PassageiroDB):
-        voo_db = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
-        if not voo_db:
-            raise ValueError("Voo não encontrado.")
-        if passageiro_db in voo_db.passageiros:
-            raise ValueError("Passageiro já está na tripulação.")
 
-        voo_db.tripulacao.append(passageiro_db)
-        self.db.commit()
-        self.db.refresh(voo_db)
-
-        return voo_from_db(voo_db)
     def listar_passageiros_por_voo(self, numero_voo: str):
         voos = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
         if not voos:
@@ -94,6 +83,37 @@ class VooService:
         
         return [funcionario_from_db(funcionario) for funcionario in voos.tripulacao]
     
+    def deletar_passageiro_do_voo(self, numero_voo: str, cpf: str):
+        voo_db = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
+        if not voo_db:
+            raise ValueError("Voo não encontrado.")
+
+        passageiro_db = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
+        if not passageiro_db:
+            raise ValueError("Passageiro não encontrado.")
+
+        if passageiro_db in voo_db.passageiros:
+            voo_db.passageiros.remove(passageiro_db)
+            self.db.commit()
+            return True
+        else:
+            raise ValueError("Passageiro não está associado a este voo.")
+        
+    def deletar_funcionario_do_voo(self, numero_voo: str, matricula: str):
+        voo_db = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
+        if not voo_db:
+            raise ValueError("Voo não encontrado.")
+
+        funcionario_db = self.db.query(FuncionarioDB).filter_by(matricula=matricula).first()
+        if not funcionario_db:
+            raise ValueError("Funcionario não encontrado.")
+
+        if funcionario_db in voo_db.tripulacao:
+            voo_db.tripulacao.remove(funcionario_db)
+            self.db.commit()
+            return True
+        else:
+            raise ValueError("Funcionario não está associado a este voo.")
     def deletar_voo(self, numero_voo: str):
         voo = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
         if not voo:
