@@ -28,7 +28,7 @@ class CompanhiaService:
             raise ValueError("Companhia não encontrada.")
         self.db.delete(companhia)
         self.db.commit()
-        return True
+
 
     def listar_voos_por_companhia(self, companhia_id: int):
         companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()

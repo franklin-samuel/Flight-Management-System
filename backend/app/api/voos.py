@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.services.voo_service import VooService
 from app.services.funcionario_service import FuncionarioService
@@ -79,8 +79,17 @@ def listar_passageiros(numero_voo: str, db: Session = Depends(get_db)):
 
 @router.get("/{numero_voo}/{cpf}/bagagens", response_model=list[BagagemRead])
 def listar_bagagens(numero_voo: str, cpf: str, db: Session = Depends(get_db)):
+
     service = PassageiroService(db)
     bagagens = service.listar_bagagem_por_passageiro(cpf)
     if not bagagens:
         raise HTTPException(status_code=404, detail="Bagagens não encontradas")
     return bagagens
+
+@router.delete("/{numero_voo}", status_code=status.HTTP_204_NO_CONTENT)
+def deletar_voo(numero_voo: str, db: Session = Depends(get_db)):
+    service = VooService(db)
+    try:
+        service.deletar_voo(numero_voo)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))

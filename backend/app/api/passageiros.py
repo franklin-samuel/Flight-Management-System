@@ -27,8 +27,8 @@ def buscar_passageiro_por_cpf(cpf: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Passageiro não encontrado")
     return passageiro
 
-@router.delete("/{companhia_id}", status_code=status.HTTP_204_NO_CONTENT)
-def deletar_companhia(cpf: str, db: Session = Depends(get_db)):
+@router.delete("/{cpf}", status_code=status.HTTP_204_NO_CONTENT)
+def deletar_passageiro(cpf: str, db: Session = Depends(get_db)):
     service = PassageiroService(db)
     try:
         service.deletar_passageiro(cpf)

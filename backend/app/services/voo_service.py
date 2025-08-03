@@ -96,9 +96,8 @@ class VooService:
     
     def deletar_voo(self, numero_voo: str):
         voo = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
-        if not voos:
+        if not voo:
             raise ValueError("Voo não encontrado.")
 
         self.db.delete(voo)
         self.db.commit()
-        return True
