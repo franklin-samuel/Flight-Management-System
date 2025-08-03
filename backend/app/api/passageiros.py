@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.services.passageiro_service import PassageiroService
 from app.database.session import get_db
-from app.models.pessoa import Passageiro
+from app.api.schemas import PassageiroRead
 
 router = APIRouter(prefix="/passageiros", tags=["Passageiros"])
 
-@router.post("/", response_model=Passageiro, status_code=201)
+@router.post("/", response_model=PassageiroRead, status_code=201)
 def criar_passageiro(nome: str, cpf: str, db: Session = Depends(get_db)):
     service = PassageiroService(db)
     try:
@@ -14,12 +14,12 @@ def criar_passageiro(nome: str, cpf: str, db: Session = Depends(get_db)):
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
-@router.get("/", response_model=list(Passageiro))
+@router.get("/", response_model=list[PassageiroRead])
 def listar_passageiros(db: Session = Depends(get_db)):
     service = PassageiroService(db)
     return service.listar_passageiros()
 
-@router.get("/{cpf}", response_model=Passageiro)
+@router.get("/{cpf}", response_model=PassageiroRead)
 def buscar_passageiro_por_cpf(cpf: str, db: Session = Depends(get_db)):
     service = PassageiroService(db)
     passageiro = service.buscar_passageiro_por_cpf(cpf)

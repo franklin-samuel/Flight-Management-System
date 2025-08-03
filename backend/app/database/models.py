@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, String, ForeignKey, Table
 from sqlalchemy.orm import relationship
-from database.base import Base
+from app.database.base import Base
 import uuid
 
 tripulantes_voo = Table(

@@ -1,5 +1,5 @@
 from sqlalchemy.orm import Session
-from app.database.models import Voo as VooDB, Passageiro as PassageiroDB, Funcionario as FuncionarioDB, AeronaveDB
+from app.database.models import Voo as VooDB, Passageiro as PassageiroDB, Funcionario as FuncionarioDB, MiniAeronave as AeronaveDB
 from app.services.mappers.voo_mapper import voo_from_db
 from app.services.mappers.passageiro_mapper import passageiro_from_db
 from app.services.mappers.funcionario_mapper import funcionario_from_db

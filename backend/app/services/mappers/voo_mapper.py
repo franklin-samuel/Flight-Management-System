@@ -3,7 +3,7 @@ from app.models.voo import Voo
 from app.models.voo import MiniAeronave
 from app.models.pessoa import Passageiro
 from app.models.voo import MiniAeronave
-from app.database.models import Aeronave as AeronaveDB
+from app.database.models import MiniAeronave as AeronaveDB
 
 def voo_from_db(voo_db: VooDB) -> Voo:
     voo = Voo(
