@@ -2,6 +2,8 @@ from app.database.models import Voo as VooDB
 from app.models.voo import Voo
 from app.models.voo import MiniAeronave
 from app.models.pessoa import Passageiro
+from app.models.voo import MiniAeronave
+from app.database.models import Aeronave as AeronaveDB
 
 def voo_from_db(voo_db: VooDB) -> Voo:
     voo = Voo(
@@ -18,3 +20,9 @@ def voo_from_db(voo_db: VooDB) -> Voo:
     for f in voo_db.funcionarios:
         voo.adicionar_funcionario(f.nome)
     return voo
+
+def aeronave_from_db(aeronave_db: AeronaveDB) -> MiniAeronave:
+    return MiniAeronave(
+        modelo=aeronave_db.modelo,
+        capacidade=aeronave_db.capacidade
+    )

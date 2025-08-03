@@ -12,7 +12,7 @@ class CompanhiaService:
         self.db.refresh(nova)
         return companhia_from_db(nova)
 
-    def listar_todas_companhias(self, db: Session):
+    def listar_todas_companhias(self):
         companhias = self.db.query(CompanhiaDB).all()
         return [companhia_from_db(c) for c in companhias]
 
