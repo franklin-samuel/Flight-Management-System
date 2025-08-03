@@ -12,7 +12,7 @@ app = FastAPI(
 # Configurar CORS para permitir acesso do frontend (React, por exemplo)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Samuel coloca o endereço frontend aqui cria
+    allow_origins=["*"],  # Samuel coloca o endereço frontend aqui cria
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
