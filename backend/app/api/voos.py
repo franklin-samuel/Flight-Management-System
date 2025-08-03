@@ -84,4 +84,9 @@ def listar_passageiros(numero_voo: str, db: Session = Depends(get_db)):
     return passageiros
 
 @router.get("/{numero_voo}/{cpf}/bagagens")
-def listar_bagagens(numero_voo: str, cpf: str, db: Session = )
+def listar_bagagens(numero_voo: str, cpf: str, db: Session = Depends(get_db)):
+    service = PassageiroService(db)
+    bagagens = service.listar_bagagem_por_passageiro(cpf)
+    if not bagagens:
+        raise HTTPException(status_code=404, detail="Bagagens não encontradas")
+    return bagagens
