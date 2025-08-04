@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 from typing import Optional
-
+from enum import Enum
 class VooBase(BaseModel):
     numero_voo: str
     origem: str
@@ -25,6 +25,16 @@ class FuncionarioRead(BaseModel):
     model_config = {
         "from_attributes": True
     }
+class CargoEnum(str, Enum):
+    PILOTO = "Piloto"
+    COPILOTO = "Copiloto"
+    COMISSARIO = "Comissário"
+
+class FuncionarioCreate(BaseModel):
+    nome: str
+    cpf: str
+    cargo: CargoEnum
+    matricula: str
 
 class PassageiroRead(BaseModel):
     id: int

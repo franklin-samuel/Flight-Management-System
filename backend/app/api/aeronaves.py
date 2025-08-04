@@ -20,7 +20,7 @@ def criar(dados_aeronave: AeronaveCreate, db: Session = Depends(get_db)):
 @router.get("", response_model=list[AeronaveRead])
 def listar(db: Session = Depends(get_db)):
     service = AeronaveService(db)
-    return service.listar_aeronaves
+    return service.listar_aeronaves()
 
 @router.get("{modelo}", response_model=AeronaveRead)
 def buscar(modelo: str, db: Session = Depends(get_db)):

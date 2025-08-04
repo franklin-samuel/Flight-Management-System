@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from app.database.session import get_db
 from app.services.funcionario_service import FuncionarioService
-from app.api.schemas import FuncionarioRead
+from app.api.schemas import FuncionarioRead, FuncionarioCreate
 
 router = APIRouter(prefix="/tripulacao", tags=["Tripulacao"])
 
@@ -12,10 +12,10 @@ def listar_funcionarios(db: Session = Depends(get_db)):
     return service.listar_funcionarios()
 
 @router.post("/", response_model=FuncionarioRead, status_code=201)
-def criar_funcionario(nome: str, matricula: str, db: Session = Depends(get_db)):
+def criar_funcionario(dados: FuncionarioCreate, db: Session = Depends(get_db)):
     service = FuncionarioService(db)
     try:
-        return service.criar_funcionario(nome, matricula)
+        return service.criar_funcionario(dados.nome, dados.matricula, dados.cargo, dados.cpf)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 

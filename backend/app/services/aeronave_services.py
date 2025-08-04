@@ -1,13 +1,15 @@
 from sqlalchemy.orm import Session
 from app.database.models import MiniAeronave as MiniAeronaveDB
-from app.services.mappers.aeronave_mapper import aeronave_from_db
+from app.services.mappers.aeronave_mapper import aeronave_to_db
+from app.models.voo import MiniAeronave
 
 class AeronaveService:
     def __init__(self, db: Session):
         self.db = db
 
     def criar_aeronave(self, modelo: str, capacidade: int):
-        nova = MiniAeronaveDB(modelo, capacidade)
+        nave =  MiniAeronave(modelo, capacidade)
+        nova = aeronave_to_db(nave)
         self.db.add(nova)
         self.db.commit()
         self.db.refresh(nova)
@@ -31,6 +33,6 @@ class AeronaveService:
         self.db.delete(aeronave)
         self.db.commit()
 
-    def listar_voos_da_aeronave(self):
-        Aeronaves = self.db.query(MiniAeronaveDB).all()
+    def listar_voos_da_aeronave(self, modelo):
+        Aeronaves = self.db.query(MiniAeronaveDB).filter_by(modelo=modelo).all()
         return [aeronave for aeronave in Aeronaves.voos]
