@@ -7,7 +7,7 @@ from app.api.schemas import AeronaveCreate, AeronaveRead, VooRead
 router = APIRouter(prefix="/aeronaves", tags=["Aeronaves"])
 
 @router.post("", response_model = AeronaveRead)
-def criar(dados_aeronave=AeronaveCreate, db: Session = Depends(get_db)):
+def criar(dados_aeronave: AeronaveCreate, db: Session = Depends(get_db)):
     service = AeronaveService(db)
     try:
         return service.criar_aeronave(

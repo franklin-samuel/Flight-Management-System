@@ -48,17 +48,18 @@ class PassageiroService:
         passageiro_poo = passageiro_from_db(passageiro)
         passageiro_poo.adicionar_bagagem(bagagem)
 
-        passageiro.bagagens = passageiro_poo.bagagens
+        ultima_bagagem = bagagem_to_db(passageiro_poo.bagagens[-1])
 
+        self.db.add(ultima_bagagem)
         self.db.commit()
-        self.db.refresh(passageiro)
-        return passageiro
+        self.db.refresh(ultima_bagagem)
+        return ultima_bagagem
 
     def deletar_bagagem(self, cpf:str, bagagem_id: int):
         passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
         if not passageiro:
             raise ValueError ("Passageiro não encontrado")
-        bagagem = self.db.query(BagagemDB).filter_by(bagagem_id=id).first()
+        bagagem = self.db.query(BagagemDB).filter_by(id=bagagem_id).first()
         if bagagem in passageiro.bagagens:
             self.db.remove(bagagem)
             self.db.commit()
