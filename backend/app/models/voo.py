@@ -7,6 +7,16 @@ class MiniAeronave:
         self.modelo = modelo 
         self.capacidade = capacidade 
         self.voos = voos or []
+
+    def __eq__(self, other):
+        if not isinstance(other, MiniAeronave):
+            return NotImplemented
+        return (self.modelo == other.modelo) and (self.capacidade == other.capacidade)
+
+    def __lt__(self, other):
+        if not isinstance(other, MiniAeronave):
+            return NotImplemented
+        return self.capacidade < other.capacidade
     
     def resumo_voo(self):
         return f"{self.modelo} com capacidade para {self.capacidade} passageiros. "
@@ -20,7 +30,15 @@ class Voo:
         self.passageiros = []
         self.funcionarios = []
 
-        # implementar database nas listas 
+    def __eq__(self, other):
+        if not isinstance(other, Voo):
+            return NotImplemented
+        return self.numero_voo == other.numero_voo
+    
+    def __lt__(self, other):
+        if not isinstance(other, Voo):
+            return NotImplemented
+        return len(self.passageiros) < len(other.passageiros)
 
     def adicionar_passageiro(self, passageiro):
         if len(self.passageiros) >= self.aeronave.capacidade:
