@@ -93,3 +93,21 @@ def deletar_voo(numero_voo: str, db: Session = Depends(get_db)):
         service.deletar_voo(numero_voo)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+
+@router.delete("/{numero_voo}/{cpf}", status_code=status.HTTP_204_NO_CONTENT)
+def deletar_passageiro_do_voo(numero_voo: str, cpf: str, db: Session = Depends(get_db)):
+    voo_service = VooService(db)
+    try:
+        voo_service.deletar_passageiro_do_voo(numero_voo, cpf)
+        return {"mensagem": "Passageiro removido do voo com sucesso."}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@router.delete("/{numero_voo}/{matricula}", status_code=status.HTTP_204_NO_CONTENT)
+def deletar_passageiro_do_voo(numero_voo: str, matricula: str, db: Session = Depends(get_db)):
+    voo_service = VooService(db)
+    try:
+        voo_service.deletar_funcionario_do_voo(numero_voo, matricula)
+        return {"mensagem": "Funcionario removido do voo com sucesso."}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
