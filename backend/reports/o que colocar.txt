@@ -1,15 +1,2 @@
 aqui vão ficar os arquivos relatórios que serão gerados em PDF
 
-passageiros=[
-    rota post para adicionar bagagens do passageiro
-    rota delete para deletar bagagem do passageiro
-]
-
-companhia=[
-    rota post para adicionar voo a companhia
-    rota get para buscar voo na companhia
-]
-
-aeronave=[
-    rota get para listar voos da aeronave
-]

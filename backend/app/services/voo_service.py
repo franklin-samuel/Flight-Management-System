@@ -33,8 +33,8 @@ class VooService:
         return None
 
     #Expor função no método GET
-    def listar_todos_voos(self):
-        voos_db = self.db.query(VooDB).all()
+    def listar_todos_voos(self, numero_voo):
+        voos_db = self.db.query(VooDB).filter_by(numero_voo).all()
         return [v for v in voos_db]
 
 
