@@ -7,10 +7,10 @@ from app.api.schemas import CompanhiaCreate, CompanhiaRead, VooRead
 router = APIRouter(prefix="/companhias", tags=["Companhias"])
 
 @router.post("", response_model=CompanhiaRead, status_code=201)
-def criar_companhia(dados: CompanhiaCreate, db: Session = Depends(get_db)):
+def criar_companhia(nome: str, db: Session = Depends(get_db)):
     service = CompanhiaService(db)
     try:
-        return service.criar_companhia(dados.nome)
+        return service.criar_companhia(nome)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
 
