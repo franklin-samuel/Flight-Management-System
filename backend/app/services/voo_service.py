@@ -4,6 +4,7 @@ from app.services.mappers.voo_mapper import voo_from_db
 from app.services.mappers.passageiro_mapper import passageiro_from_db
 from app.services.mappers.funcionario_mapper import funcionario_from_db
 from app.models.voo import Voo
+from app.models.pessoa import Passageiro
 
 #Expor Função no método POST
 class VooService:
@@ -29,33 +30,31 @@ class VooService:
     def buscar_voo(self, numero_voo: str):
         voo_db = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
         if voo_db:
-            return voo_from_db(voo_db)
+            return voo_db
         return None
 
     #Expor função no método GET
-    def listar_todos_voos(self, numero_voo):
-        voos_db = self.db.query(VooDB).filter_by(numero_voo).all()
+    def listar_todos_voos(self):
+        voos_db = self.db.query(VooDB).all()
         return [v for v in voos_db]
 
 
-    def adicionar_passageiro_ao_voo(self, numero_voo: str, nome: str, cpf: str):
+    def adicionar_passageiro_ao_voo(self, numero_voo: str, passageiro: Passageiro):
         voo_db = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
         if not voo_db:
             raise ValueError("Voo não encontrado.")
 
-        passageiro_db = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
-        if not passageiro_db:
-            passageiro_db = PassageiroDB(nome=nome, cpf=cpf)
+        voo_poo = voo_from_db(voo_db)
+        voo_poo.adicionar_passageiro(passageiro)
 
+        ultimo_passageiro = voo_poo.passageiros[-1]
+        passageiro_db = self.db.query(PassageiroDB).filter_by(cpf=ultimo_passageiro.cpf).first()
 
         if passageiro_db not in voo_db.passageiros:
-            passageiro = passageiro_from_db(passageiro_db)
-            voo_poo = voo_from_db(voo_db)
-            voo_poo.adicionar_passageiro(passageiro)
+            voo_db.passageiros.append(passageiro_db)
 
-            voo_db.passageiros = voo_poo.passageiros
-            self.db.commit()
-            self.db.refresh(voo_db)
+        self.db.commit()
+        self.db.refresh(voo_db)
         return voo_db
 
 

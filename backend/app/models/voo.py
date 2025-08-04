@@ -17,8 +17,8 @@ class Voo:
         self.origem = origem
         self.destino = destino
         self.aeronave = aeronave
-        self.passageiros: list[Passageiro] = []
-        self.funcionarios: list[str] = []
+        self.passageiros = []
+        self.funcionarios = []
 
         # implementar database nas listas 
 

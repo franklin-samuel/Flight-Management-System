@@ -78,7 +78,7 @@ def listar_passageiros(numero_voo: str, db: Session = Depends(get_db)):
     return passageiros
 
 @router.get("/{numero_voo}/{cpf}/bagagens", response_model=list[BagagemRead])
-def listar_bagagens(numero_voo: str, cpf: str, db: Session = Depends(get_db)):
+def listar_bagagens(cpf: str, db: Session = Depends(get_db)):
 
     service = PassageiroService(db)
     bagagens = service.listar_bagagem_por_passageiro(cpf)
@@ -104,7 +104,7 @@ def deletar_passageiro_do_voo(numero_voo: str, cpf: str, db: Session = Depends(g
         raise HTTPException(status_code=404, detail=str(e))
 
 @router.delete("/{numero_voo}/{matricula}", status_code=status.HTTP_204_NO_CONTENT)
-def deletar_passageiro_do_voo(numero_voo: str, matricula: str, db: Session = Depends(get_db)):
+def deletar_funcionario_do_voo(numero_voo: str, matricula: str, db: Session = Depends(get_db)):
     voo_service = VooService(db)
     try:
         voo_service.deletar_funcionario_do_voo(numero_voo, matricula)

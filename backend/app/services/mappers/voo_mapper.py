@@ -8,14 +8,14 @@ def voo_from_db(voo_db: VooDB) -> Voo:
         numero_voo=voo_db.numero_voo,
         origem=voo_db.origem,
         destino=voo_db.destino,
-        aeronave=MiniAeronave(
-            modelo=voo_db.aeronave.modelo,
-            capacidade=voo_db.aeronave.capacidade
+        aeronave=MiniAeronave( 
+            modelo=voo_db.aeronave_id.modelo,
+            capacidade=voo_db.aeronave_id.capacidade
         ),
     )
     for p in voo_db.passageiros:
         voo.adicionar_passageiro(Passageiro(nome=p.nome, cpf=p.cpf))
-    for f in voo_db.funcionarios:
+    for f in voo_db.tripulacao:
         voo.adicionar_funcionario(f.nome)
     return voo
 

@@ -23,7 +23,7 @@ class Voo(Base):
     __tablename__ = 'voos'
 
     id = Column(Integer, primary_key=True)
-    numero_voo = Column(String(10), nullable=False)
+    numero_voo = Column(String(10), unique=True, nullable=False)
     origem = Column(String(50), nullable=False)
     destino = Column(String(50), nullable=False)
 
@@ -49,7 +49,7 @@ class CompanhiaAerea(Base):
     __tablename__ = 'companhias'
 
     id = Column(Integer, primary_key=True)
-    nome = Column(String, nullable=False)
+    nome = Column(String, unique=True, nullable=False)
 
     voos = relationship("Voo", back_populates="companhia")
 

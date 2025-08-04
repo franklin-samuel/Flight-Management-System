@@ -27,10 +27,8 @@ class PassageiroService:
         passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
         if not passageiro:
             raise ValueError ("Passageiro não encontrado")
-        passageiro_poo = passageiro_from_db(passageiro)
-        bagagens = passageiro_poo.listar_bagagens()
 
-        return [bagagem_to_db(bagagem)for bagagem in bagagens]
+        return passageiro.bagagens
 
     def deletar_passageiro(self, cpf:str):
         passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
@@ -41,19 +39,17 @@ class PassageiroService:
         self.db.commit()
 
     def adicionar_bagagem(self, cpf:str, descricao: str, peso: float):
-        passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
-        if not passageiro:
-            raise ValueError ("Passageiro não encontrado")
-        bagagem = Bagagem(descricao, peso)
-        passageiro_poo = passageiro_from_db(passageiro)
-        passageiro_poo.adicionar_bagagem(bagagem)
+            passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()
+            if not passageiro:
+                raise ValueError("Passageiro não encontrado")
 
-        ultima_bagagem = bagagem_to_db(passageiro_poo.bagagens[-1])
+            nova_bagagem = BagagemDB(descricao=descricao, peso=peso, passageiro_id=passageiro.id)
 
-        self.db.add(ultima_bagagem)
-        self.db.commit()
-        self.db.refresh(ultima_bagagem)
-        return ultima_bagagem
+            self.db.add(nova_bagagem)
+            self.db.commit()
+            self.db.refresh(nova_bagagem)
+
+            return nova_bagagem
 
     def deletar_bagagem(self, cpf:str, bagagem_id: int):
         passageiro = self.db.query(PassageiroDB).filter_by(cpf=cpf).first()

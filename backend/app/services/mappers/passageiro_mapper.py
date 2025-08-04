@@ -4,10 +4,11 @@ from app.database.models import Passageiro as PassageiroDB
 from app.database.models import Bagagem as BagagemDB
 
 def passageiro_from_db(passageiro_db: PassageiroDB) -> Passageiro:
+    bagagens = [bagagem for bagagem in passageiro_db.bagagens]
     return Passageiro(
         nome=passageiro_db.nome,
         cpf=passageiro_db.cpf,
-        bagagens=[bagagem for bagagem in passageiro_db.bagagens]
+        bagagens=bagagens
     )
 
 def bagagem_from_db(bagagem_db: BagagemDB) -> Bagagem:

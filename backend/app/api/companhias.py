@@ -17,12 +17,12 @@ def criar_companhia(nome: str, db: Session = Depends(get_db)):
 @router.get("", response_model=list[CompanhiaRead])
 def listar_companhias(db: Session = Depends(get_db)):
     service = CompanhiaService(db)
-    return service.listar_todas()
+    return service.listar_todas_companhias()
 
 @router.get("/{companhia_id}", response_model=CompanhiaRead)
 def buscar_companhia(companhia_id: int, db: Session = Depends(get_db)):
     service = CompanhiaService(db)
-    companhia = service.buscar_por_id(companhia_id)
+    companhia = service.buscar_companhia_por_id(companhia_id)
     if not companhia:
         raise HTTPException(status_code=404, detail="Companhia não encontrada")
     return companhia

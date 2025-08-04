@@ -17,9 +17,9 @@ class Pessoa:
     
 
 class Passageiro(Pessoa):
-    def __init__(self, nome: str, cpf: str, bagagens=None):
+    def __init__(self, nome: str, cpf: str):
         super().__init__(nome, cpf)
-        self.bagagens = bagagens or []
+        self.bagagens = []
 
     def adicionar_bagagem(self, bagagem: Bagagem):
         self.bagagens.append(bagagem)
@@ -28,7 +28,7 @@ class Passageiro(Pessoa):
         bagagens = []
         for bagagem in self.bagagens:
             bagagens.append(bagagem)
-            return bagagens
+        return bagagens
 
 class Funcionario(Pessoa, IdentificavelMixin, Logavel):
     def __init__(self, cargo: str, matricula: str, nome: str, cpf: str):
