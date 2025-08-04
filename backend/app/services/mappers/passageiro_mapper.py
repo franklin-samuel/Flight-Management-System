@@ -24,7 +24,7 @@ def passageiro_to_db(passageiro_db: Passageiro) -> PassageiroDB:
 
     )
 
-def bagagem_from_db(bagagem_db: Bagagem) -> BagagemDB:
+def bagagem_to_db(bagagem_db: Bagagem) -> BagagemDB:
     return BagagemDB(
         descricao=bagagem_db.descricao,
         peso=bagagem_db.peso
