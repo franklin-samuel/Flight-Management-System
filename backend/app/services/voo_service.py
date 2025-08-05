@@ -29,12 +29,12 @@ class VooService:
     def buscar_voo(self, numero_voo: str):
         voo_db = self.db.query(VooDB).filter_by(numero_voo=numero_voo).first()
         if voo_db:
-            return voo_from_db(voo_db)
+            return voo_db
         return None
 
     #Expor função no método GET
-    def listar_todos_voos(self, numero_voo):
-        voos_db = self.db.query(VooDB).filter_by(numero_voo).all()
+    def listar_todos_voos(self):
+        voos_db = self.db.query(VooDB).all()
         return [v for v in voos_db]
 
 
