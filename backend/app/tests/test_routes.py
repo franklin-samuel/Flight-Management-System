@@ -65,6 +65,12 @@ def test_fluxo_voo_completo(client):
     assert resp.status_code == 200
     assert len(resp.json()) == 1
 
+    # Verificar se relatório foi criado corretamente
+    resp = client.get(f"/voos/AZ123/relatorio")
+    assert resp.status_code == 200
+    assert resp.headers["content-type"] == "application/pdf"
+    assert len(resp.content) > 100
+
     # Deletar passageiro
     resp = client.delete(f"/voos/AZ123/00011122233")
     assert resp.status_code == 204
@@ -72,3 +78,5 @@ def test_fluxo_voo_completo(client):
     # Verificar que o passageiro não está mais no voo
     resp = client.get(f"/voos/AZ123/passageiros")
     assert resp.status_code == 404
+
+    

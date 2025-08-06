@@ -1,8 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
 from app.services.voo_service import VooService
 from app.services.funcionario_service import FuncionarioService
 from app.services.passageiro_service import PassageiroService
+from app.services.relatorio_service import RelatorioService
 from app.database.session import get_db
 from app.models.voo import Voo
 from app.api.schemas import VooCreate, VooRead, PassageiroRead, FuncionarioRead, BagagemRead
@@ -109,5 +111,18 @@ def deletar_funcionario_do_voo(numero_voo: str, matricula: str, db: Session = De
     try:
         voo_service.deletar_funcionario_do_voo(numero_voo, matricula)
         return {"mensagem": "Funcionario removido do voo com sucesso."}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+@router.get("/{numero_voo}/relatorio", response_class=StreamingResponse)
+def gerar_relatorio(numero_voo: str, db: Session = Depends(get_db)):
+    service = RelatorioService(db)
+    try:
+        buffer = service.gerar_pdf_por_numero_voo(numero_voo)
+        return StreamingResponse(
+            buffer,
+            media_type="application/pdf",
+            headers={"Content-Disposition": f"inline; filename=relatorio_{numero_voo}.pdf"}
+        )
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
