@@ -46,7 +46,7 @@ class CompanhiaService:
         companhia_poo = companhia_from_db(companhia)
         companhia_poo.adicionar_voo(Voo)
 
-        companhia.voos = companhia_poo.voos
+        companhia.voos = companhia_poo._voos
         
         self.db.commit()
         self.db.refresh(companhia)
