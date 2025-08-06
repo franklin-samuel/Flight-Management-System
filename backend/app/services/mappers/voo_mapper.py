@@ -2,6 +2,7 @@ from app.database.models import Voo as VooDB, MiniAeronave as MiniAeronaveDB, Pa
 from app.models.voo import Voo
 from app.models.voo import MiniAeronave
 from app.models.pessoa import Passageiro
+from app.api.schemas import VooCreate
 
 def voo_from_db(voo_db: VooDB) -> Voo:
     voo = Voo(
@@ -19,15 +20,12 @@ def voo_from_db(voo_db: VooDB) -> Voo:
         voo.adicionar_funcionario(f.nome)
     return voo
 
-def voo_to_db(voo: Voo) -> VooDB:
+def voo_to_db(voo: VooCreate, aeronave: MiniAeronaveDB) -> VooDB:
     voo_db = VooDB(
         numero_voo=voo.numero_voo,
         origem=voo.origem,
         destino=voo.destino,
-        aeronave=MiniAeronaveDB(
-            modelo=voo.aeronave.modelo,
-            capacidade=voo.aeronave.capacidade
-        ),
+        aeronave=aeronave,
         passageiros=[
             PassageiroDB(nome=p.nome, cpf=p.cpf) for p in voo.passageiros
         ],
@@ -37,3 +35,11 @@ def voo_to_db(voo: Voo) -> VooDB:
         ]
     )
     return voo_db
+
+def voo_create_to_db(voo_data: VooCreate, aeronave_id) -> VooDB:
+    return VooDB(
+        numero_voo=voo_data.numero_voo,
+        origem=voo_data.origem,
+        destino=voo_data.destino,
+        aeronave_id=aeronave_id
+    )

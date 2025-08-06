@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
 from app.database.models import Voo as VooDB, Passageiro as PassageiroDB, Funcionario as FuncionarioDB, MiniAeronave as AeronaveDB
-from app.services.mappers.voo_mapper import voo_from_db
+from app.services.mappers.voo_mapper import voo_from_db,  voo_create_to_db
 from app.services.mappers.passageiro_mapper import passageiro_from_db
 from app.services.mappers.funcionario_mapper import funcionario_from_db
 from app.models.voo import Voo
+from app.api.schemas import VooCreate
 
 #Expor Função no método POST
 class VooService:
@@ -14,12 +15,15 @@ class VooService:
         if not aeronave:
             raise ValueError("Aeronave não encontrada.")
 
-        voo_db = VooDB(
-            numero_voo=numero_voo,
-            origem=origem,
-            destino=destino,
-            aeronave_id=aeronave.id
+        voo_db = voo_create_to_db(
+            VooCreate(
+                numero_voo=numero_voo,
+                origem=origem,
+                destino=destino,
+                aeronave_id=aeronave_id
+            ), aeronave_id
         )
+
         self.db.add(voo_db)
         self.db.commit()
         self.db.refresh(voo_db)

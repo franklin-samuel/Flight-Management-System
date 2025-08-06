@@ -12,11 +12,11 @@ class MiniAeronave:
         return f"{self.modelo} com capacidade para {self.capacidade} passageiros. "
 
 class Voo:
-    def __init__(self, numero_voo, origem, destino, aeronave: MiniAeronave):
+    def __init__(self, numero_voo, origem, destino, aeronave_id):
         self.numero_voo = numero_voo
         self.origem = origem
         self.destino = destino
-        self.aeronave = aeronave
+        self.aeronave_id = aeronave_id
         self.passageiros: list[Passageiro] = []
         self.funcionarios: list[str] = []
 

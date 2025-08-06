@@ -3,6 +3,9 @@ from app.database.models import CompanhiaAerea as CompanhiaDB
 from app.services.mappers.companhia_mapper import companhia_from_db, companhia_to_db
 from app.models.voo import CompanhiaAerea
 from app.services.mappers.voo_mapper import voo_to_db
+from app.database.models import MiniAeronave as MiniAeronaveDB
+from app.api.schemas import VooCreate
+
 class CompanhiaService:
     def __init__(self, db: Session):
         self.db = db
@@ -41,10 +44,14 @@ class CompanhiaService:
         return [voo for voo in companhia.voos]
     
 
-    def adicionar_voo_a_companhia(self, companhia_id: int, Voo):
+    def adicionar_voo_a_companhia(self, companhia_id: int, Voo: VooCreate):
         companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()
         companhia_poo = companhia_from_db(companhia)
-        companhia_poo.adicionar_voo(Voo)
+
+        aeronave = self.db.query(MiniAeronaveDB).filter_by(id=Voo.aeronave_id).first()
+        
+        voo_db = voo_to_db(Voo, aeronave) 
+        companhia.voos.append(voo_db)
 
         companhia.voos = companhia_poo._voos
         
