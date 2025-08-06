@@ -3,6 +3,9 @@ from app.database.models import CompanhiaAerea as CompanhiaDB
 from app.services.mappers.companhia_mapper import companhia_from_db, companhia_to_db
 from app.models.voo import CompanhiaAerea, Voo
 from app.services.mappers.voo_mapper import voo_to_db
+from app.database.models import MiniAeronave as MiniAeronaveDB
+from app.api.schemas import VooCreate
+
 class CompanhiaService:
     def __init__(self, db: Session):
         self.db = db
@@ -52,10 +55,7 @@ class CompanhiaService:
         voos_db = [voo_to_db(v) for v in companhia_poo._voos]
         companhia_db.voos = voos_db
 
-        self.db.commit()
-        self.db.refresh(companhia_db)
 
-        return companhia_db
 
     def buscar_voo(self, companhia_id: int, numero_voo: str):
         companhia = self.db.query(CompanhiaDB).filter_by(id=companhia_id).first()

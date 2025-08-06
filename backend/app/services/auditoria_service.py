@@ -3,7 +3,7 @@ from app.models.auditor import Auditor
 from app.database.crud import buscar_voo
 from database.session import SessionLocal
 
-def executar_auditoria(numero_voo: str):
+def executar_auditoria(numero_voo: str): #GET /auditoria/{numero_voo}/
     db = SessionLocal() 
     try:
         voo = buscar_voo(db, numero_voo)

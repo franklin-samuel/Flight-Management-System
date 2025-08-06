@@ -4,9 +4,11 @@ from app.models.voo import CompanhiaAerea
 def companhia_from_db(db_model: CompanhiaDB) -> CompanhiaAerea:
     return CompanhiaAerea(
         nome=db_model.nome,
-        voos=[voo for voo in db_model.voos]
+        voos=[voo for voo in getattr(db_model, 'voos', [])]
     )
 
 def companhia_to_db(db_model: CompanhiaAerea) -> CompanhiaDB:
-    return CompanhiaDB(nome=db_model.nome,
-                       voos=[voo for voo in db_model._voos])
+    return CompanhiaDB(
+        nome=db_model.nome,
+        voos=[voo for voo in getattr(db_model, 'voos', [])]
+    )
