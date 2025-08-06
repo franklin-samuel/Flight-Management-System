@@ -10,8 +10,8 @@ def voo_from_db(voo_db: VooDB) -> Voo:
         origem=voo_db.origem,
         destino=voo_db.destino,
         aeronave=MiniAeronave( 
-            modelo=voo_db.aeronave_id.modelo,
-            capacidade=voo_db.aeronave_id.capacidade
+            modelo=voo_db.aeronave.modelo,
+            capacidade=voo_db.aeronave.capacidade
         ),
     )
     for p in voo_db.passageiros:

@@ -22,7 +22,7 @@ class MiniAeronave:
         return f"{self.modelo} com capacidade para {self.capacidade} passageiros. "
 
 class Voo:
-    def __init__(self, numero_voo, origem, destino, aeronave_id):
+    def __init__(self, numero_voo, origem, destino, aeronave):
         self.numero_voo = numero_voo
         self.origem = origem
         self.destino = destino
@@ -60,14 +60,14 @@ class Voo:
 
 class CompanhiaAerea:
     """Agrupa seus voos (has-a)."""
-    def __init__(self, nome: str, voos=None):
+    def __init__(self, nome: str):
         nome = nome.strip()
         
         if len(nome) < 3:
             raise ValueError("o nome da companhia deve ter pelo menos 3 letras.")
         
         self._nome = nome
-        self._voos = voos or []
+        self._voos = []
     
     @property
     def nome(self):

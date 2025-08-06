@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from app.services.companhia_service import CompanhiaService
+from app.services.voo_service import VooService
 from app.database.session import get_db
-from app.api.schemas import CompanhiaCreate, CompanhiaRead, VooRead, VooCreate
+from app.api.schemas import CompanhiaCreate, CompanhiaRead, VooRead, VooCreate, VooNumero
 
 router = APIRouter(prefix="/companhias", tags=["Companhias"])
 
@@ -56,9 +57,11 @@ def remover_voo_da_companhia(companhia_id: int, numero_voo: str, db: Session = D
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
     
-@router.post("/{companhia_id}/voos", response_model=VooRead, status_code=201)
-def adicionar_voo_a_companhia( companhia_id: int, voo: VooCreate, db: Session = Depends(get_db)):
+@router.post("/{companhia_id}/voos", response_model=CompanhiaRead, status_code=201)
+def adicionar_voo_a_companhia( companhia_id: int, numero_voo: VooNumero, db: Session = Depends(get_db)):
     service = CompanhiaService(db)
+    vooservice = VooService(db)
+    voo = vooservice.buscar_voo(numero_voo.numero_voo)
     try:
         return service.adicionar_voo_a_companhia(companhia_id, voo)
     except ValueError as e:

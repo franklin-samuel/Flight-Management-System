@@ -18,13 +18,17 @@ class VooRead(VooBase):
     }
 
 class FuncionarioRead(BaseModel):
-    id: int
+    id: str
     nome: str
     matricula: str
 
     model_config = {
         "from_attributes": True
     }
+
+class VooNumero(BaseModel):
+    numero_voo: str
+
 class CargoEnum(str, Enum):
     PILOTO = "Piloto"
     COPILOTO = "Copiloto"
@@ -80,3 +84,4 @@ class AeronaveRead(AeronaveBase):
     model_config = {
         "from_attributes": True
     }
+

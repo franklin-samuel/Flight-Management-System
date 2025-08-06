@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from app.database.models import Voo as VooDB, Passageiro as PassageiroDB, Funcionario as FuncionarioDB, MiniAeronave as AeronaveDB
 from app.services.mappers.voo_mapper import voo_from_db,  voo_create_to_db
 from app.services.mappers.passageiro_mapper import passageiro_from_db
-from app.services.mappers.funcionario_mapper import funcionario_from_db
+from app.services.mappers.funcionario_mapper import funcionario_from_db, funcionario_to_db
 from app.models.voo import Voo
 from app.models.pessoa import Passageiro
 from app.api.schemas import VooCreate
@@ -72,7 +72,9 @@ class VooService:
         voo_poo = voo_from_db(voo_db)
         voo_poo.adicionar_tripulante(funcionario)
 
-        voo_db.tripulacao = voo_poo.tripulacao
+        nova_tripulacao_db = [funcionario_to_db(f) for f in voo_poo.tripulacao]
+        voo_db.tripulacao = nova_tripulacao_db
+
         self.db.commit()
         self.db.refresh(voo_db)
 

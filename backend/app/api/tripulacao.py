@@ -22,7 +22,7 @@ def criar_funcionario(dados: FuncionarioCreate, db: Session = Depends(get_db)):
 @router.get("/{id}", response_model=FuncionarioRead)
 def buscar_funcionario(matricula: str, db: Session = Depends(get_db)):
     service = FuncionarioService(db)
-    passageiro = service.buscar_funcionario(matricula)
+    passageiro = service.buscar_funcionario_por_matricula(matricula)
     if not passageiro:
         raise HTTPException(status_code=404, detail="Passageiro não encontrado")
     return passageiro

@@ -49,11 +49,13 @@ class CompanhiaService:
         if not companhia_db:
             raise ValueError("Companhia não encontrada")
 
-        companhia_poo = companhia_from_db(companhia_db)
-        companhia_poo.adicionar_voo(voo)
+        companhia_db.voos.append(voo)
+        
+        self.db.add(companhia_db)
+        self.db.commit()
+        self.db.refresh(companhia_db)
 
-        voos_db = [voo_to_db(v) for v in companhia_poo._voos]
-        companhia_db.voos = voos_db
+        return companhia_db
 
 
 

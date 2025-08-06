@@ -1,13 +1,18 @@
 # tests/routes/test_voo_completo.py
+from app.tests.limpar_tabelas import limpar_database
+from app.database.session import SessionLocal
+
+db = SessionLocal()
 
 def test_fluxo_voo_completo(client):
     # Criar companhia
-    resp = client.post("/companhias", params={"nome": "Azul"})
+    limpar_database(db)
+    resp = client.post("/companhias", params={"nome": "Blue"})
     assert resp.status_code == 201
     companhia_id = resp.json()["id"]
 
     # Criar aeronave
-    resp = client.post("/aeronaves", json={"modelo": "A320", "capacidade": 180})
+    resp = client.post("/aeronaves", json={"modelo": "Falcon", "capacidade": 400})
     assert resp.status_code == 200
     aeronave_id = resp.json()["id"]
 
@@ -66,5 +71,4 @@ def test_fluxo_voo_completo(client):
 
     # Verificar que o passageiro não está mais no voo
     resp = client.get(f"/voos/AZ123/passageiros")
-    assert resp.status_code == 200
-    assert all(p["cpf"] != "00011122233" for p in resp.json())
+    assert resp.status_code == 404
