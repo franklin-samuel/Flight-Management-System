@@ -1,0 +1,7 @@
+/*.vscode*/
+# Ignore all files in the .vscode directory
+.vscode/*
+# Ignore the .vscode directory itself
+.pytest_cache/
+.pytest_cache/*
+./vscode/
