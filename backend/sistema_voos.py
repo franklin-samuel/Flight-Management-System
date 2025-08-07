@@ -21,6 +21,9 @@ def criar_companhias_e_voos(companhia_service, aeronave_service, voo_service):
 
     return "Companhias, aeronaves e voos criados com sucesso."
 
+def listar_voos(voo_service):
+    voos_da_companhia = voo_service.listar_todos_voos()
+    return [f"Número Voo: {v.id} | Origem: {v.origem} | Destino: {v.destino}" for v in voos_da_companhia]
 
 def listar_companhias(companhia_service):
     companhias = companhia_service.listar_todas_companhias()
@@ -70,7 +73,8 @@ def main():
         print("4. Criar funcionário")
         print("5. Adicionar bagagem ao passageiro")
         print("6. Listar passageiros de um voo")
-        print("7. Auditar voo")
+        print("7. Listar todos os voos")
+        print("8. Auditar voo")
         print("0. Sair")
 
         escolha = input("Escolha uma opção: ")
@@ -115,6 +119,12 @@ def main():
                     print(linha)
 
             elif escolha == "7":
+                linhas = listar_voos(voo_service)
+                print(f"\nVoos disponíveis: ")
+                for linha in linhas:
+                    print(linha)        
+
+            elif escolha == "8":
                 numero_voo = input("Número do voo para auditoria: ")
                 msg = auditar_voo(numero_voo)
                 print(msg)
