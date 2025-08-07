@@ -7,6 +7,52 @@ from app.services.funcionario_service import FuncionarioService
 from app.database.session import SessionLocal
 
 
+def criar_companhias_e_voos(companhia_service, aeronave_service, voo_service):
+    companhia1 = companhia_service.criar_companhia("Azul")
+    companhia2 = companhia_service.criar_companhia("Gol")
+
+    aeronave1 = aeronave_service.criar_aeronave("Airbus A320", 180)
+    aeronave2 = aeronave_service.criar_aeronave("Boeing 737", 200)
+
+    voo_service.criar_voo("AZ101", "São Paulo", "Rio de Janeiro", aeronave1.id)
+    voo_service.criar_voo("AZ102", "Belo Horizonte", "Brasília", aeronave1.id)
+    voo_service.criar_voo("G3101", "Porto Alegre", "Recife", aeronave2.id)
+    voo_service.criar_voo("G3102", "Curitiba", "Salvador", aeronave2.id)
+
+    return "Companhias, aeronaves e voos criados com sucesso."
+
+
+def listar_companhias(companhia_service):
+    companhias = companhia_service.listar_todas_companhias()
+    return [f"ID: {c.id} | Nome: {c.nome}" for c in companhias]
+
+
+def criar_passageiro(passageiro_service, nome, cpf):
+    passageiro = passageiro_service.criar_passageiro(nome, cpf)
+    return f"Passageiro {passageiro.nome} cadastrado com sucesso!"
+
+
+def criar_funcionario(funcionario_service, nome, matricula, cargo, cpf):
+    funcionario = funcionario_service.criar_funcionario(nome, matricula, cargo, cpf)
+    return f"Funcionário {funcionario.nome} cadastrado com sucesso!"
+
+
+def adicionar_bagagem(passageiro_service, cpf, descricao, peso):
+    passageiro_service.adicionar_bagagem(cpf, descricao, peso)
+    return "Bagagem adicionada com sucesso."
+
+
+def listar_passageiros_do_voo(voo_service, numero_voo):
+    passageiros = voo_service.listar_passageiros_por_voo(numero_voo)
+    return [f"- {p.nome} ({p.cpf})" for p in passageiros]
+
+
+def auditar_voo(numero_voo):
+    from app.services.auditoria_service import executar_auditoria
+    executar_auditoria(numero_voo)
+    return "Auditoria concluída."
+
+
 def main():
     db = SessionLocal()
 
@@ -15,7 +61,6 @@ def main():
     passageiro_service = PassageiroService(db)
     funcionario_service = FuncionarioService(db)
     aeronave_service = AeronaveService(db)
-    auditor = Auditor()
 
     while True:
         print("\n=== MENU SISTEMA AÉREO ===")
@@ -30,84 +75,60 @@ def main():
 
         escolha = input("Escolha uma opção: ")
 
-        if escolha == "1":
-            try:
-                companhia1 = companhia_service.criar_companhia("Azul")
-                companhia2 = companhia_service.criar_companhia("Gol")
+        try:
+            if escolha == "1":
+                msg = criar_companhias_e_voos(companhia_service, aeronave_service, voo_service)
+                print(msg)
 
-                aeronave1 = aeronave_service.criar_aeronave("Airbus A320", 180)
-                aeronave2 = aeronave_service.criar_aeronave("Boeing 737", 200)
+            elif escolha == "2":
+                linhas = listar_companhias(companhia_service)
+                print("\nCompanhias cadastradas:")
+                for linha in linhas:
+                    print(linha)
 
-                voo_service.criar_voo("AZ101", "São Paulo", "Rio de Janeiro", aeronave1.id)
-                voo_service.criar_voo("AZ102", "Belo Horizonte", "Brasília", aeronave1.id)
+            elif escolha == "3":
+                nome = input("Nome do passageiro: ")
+                cpf = input("CPF do passageiro: ")
+                msg = criar_passageiro(passageiro_service, nome, cpf)
+                print(msg)
 
-                voo_service.criar_voo("G3101", "Porto Alegre", "Recife", aeronave2.id)
-                voo_service.criar_voo("G3102", "Curitiba", "Salvador", aeronave2.id)
+            elif escolha == "4":
+                nome = input("Nome do funcionário: ")
+                matricula = input("Matrícula: ")
+                cargo = input("Cargo: ")
+                cpf = input("CPF: ")
+                msg = criar_funcionario(funcionario_service, nome, matricula, cargo, cpf)
+                print(msg)
 
-                print("Companhias, aeronaves e voos criados com sucesso.")
-            except Exception as e:
-                print(f"Erro: {e}")
-
-        elif escolha == "2":
-            companhias = companhia_service.listar_todas_companhias()
-            print("\nCompanhias cadastradas:")
-            for c in companhias:
-                print(f"ID: {c.id} | Nome: {c.nome}")
-
-        elif escolha == "3":
-            nome = input("Nome do passageiro: ")
-            cpf = input("CPF do passageiro: ")
-            try:
-                passageiro = passageiro_service.criar_passageiro(nome, cpf)
-                print(f"Passageiro {passageiro.nome} cadastrado com sucesso!")
-            except Exception as e:
-                print(f"Erro: {e}")
-
-        elif escolha == "4":
-            nome = input("Nome do funcionário: ")
-            matricula = input("Matrícula: ")
-            cargo = input("Cargo: ")
-            cpf = input("CPF: ")
-            try:
-                funcionario = funcionario_service.criar_funcionario(nome, matricula, cargo, cpf)
-                print(f"Funcionário {funcionario.nome} cadastrado com sucesso!")
-            except Exception as e:
-                print(f"Erro: {e}")
-
-        elif escolha == "5":
-            cpf = input("CPF do passageiro: ")
-            descricao = input("Descrição da bagagem: ")
-            try:
+            elif escolha == "5":
+                cpf = input("CPF do passageiro: ")
+                descricao = input("Descrição da bagagem: ")
                 peso = float(input("Peso da bagagem (kg): "))
-                bagagem = passageiro_service.adicionar_bagagem(cpf, descricao, peso)
-                print("Bagagem adicionada com sucesso.")
-            except Exception as e:
-                print(f"Erro: {e}")
+                msg = adicionar_bagagem(passageiro_service, cpf, descricao, peso)
+                print(msg)
 
-        elif escolha == "6":
-            numero_voo = input("Número do voo: ")
-            try:
-                passageiros = voo_service.listar_passageiros_por_voo(numero_voo)
+            elif escolha == "6":
+                numero_voo = input("Número do voo: ")
+                linhas = listar_passageiros_do_voo(voo_service, numero_voo)
                 print(f"\nPassageiros no voo {numero_voo}:")
-                for p in passageiros:
-                    print(f"- {p.nome} ({p.cpf})")
-            except Exception as e:
-                print(f"Erro: {e}")
+                for linha in linhas:
+                    print(linha)
 
-        elif escolha == "7":
-            numero_voo = input("Número do voo para auditoria: ")
-            try:
-                executar_auditoria(numero_voo)
-            except Exception as e:
-                print(f"Erro: {e}")
+            elif escolha == "7":
+                numero_voo = input("Número do voo para auditoria: ")
+                msg = auditar_voo(numero_voo)
+                print(msg)
 
-        elif escolha == "0":
-            print("Saindo do sistema...")
-            db.close()
-            break
+            elif escolha == "0":
+                print("Saindo do sistema...")
+                db.close()
+                break
 
-        else:
-            print("Opção inválida. Tente novamente.")
+            else:
+                print("Opção inválida. Tente novamente.")
+
+        except Exception as e:
+            print(f"Erro: {e}")
 
 
 if __name__ == "__main__":
