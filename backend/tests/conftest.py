@@ -1,3 +1,4 @@
+
 import pytest
 from fastapi.testclient import TestClient
 from app.api.app import app  # ou onde está seu FastAPI
@@ -22,3 +23,4 @@ def client():
     app.dependency_overrides[get_db] = override_get_db
     with TestClient(app) as c:
         yield c
+

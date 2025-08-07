@@ -9,7 +9,7 @@ tripulantes_voo = Table(
     'tripulantes_voo',
     Base.metadata,
     Column('voo_id', Integer, ForeignKey('voos.id')),
-    Column('funcionario_id', String(36), ForeignKey('funcionarios.id'))
+    Column('funcionario_id', Text, ForeignKey('funcionarios.id'))
 )
 
 voo_passageiro = Table(
@@ -72,7 +72,6 @@ class Bagagem(Base):
 
     passageiro_id = Column(Integer, ForeignKey('passageiros.id'))
     dono = relationship("Passageiro", back_populates="bagagens")
-
 
 class Funcionario(Base):
     __tablename__ = 'funcionarios'
