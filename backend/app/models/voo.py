@@ -1,5 +1,4 @@
 #Voo, Miniaeronave, Companhia Aérea
-from app.models.pessoa import Passageiro
 
 class MiniAeronave:
     """Objeto da composição dentro de Voo."""
@@ -55,7 +54,7 @@ class Voo:
             print(passageiro)
     
     def listar_tripulantes(self):
-        for tripulante in self.tripulação:
+        for tripulante in self.tripulacao:
             print(tripulante)    
 
 class CompanhiaAerea:
