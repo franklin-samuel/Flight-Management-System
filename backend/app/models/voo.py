@@ -28,7 +28,7 @@ class Voo:
         self.destino = destino
         self.aeronave = aeronave
         self.passageiros = []
-        self.funcionarios = []
+        self.tripulacao = []
 
 
     def __eq__(self, other):
@@ -48,7 +48,7 @@ class Voo:
             self.passageiros.append(passageiro)
 
     def adicionar_tripulante(self, tripulante):
-        self.tripulação.append(tripulante)
+        self.tripulacao.append(tripulante)
 
     def listar_passageiros(self):
         for passageiro in self.passageiros:

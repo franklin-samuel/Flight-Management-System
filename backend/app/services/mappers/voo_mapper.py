@@ -17,7 +17,7 @@ def voo_from_db(voo_db: VooDB) -> Voo:
     for p in voo_db.passageiros:
         voo.adicionar_passageiro(Passageiro(nome=p.nome, cpf=p.cpf))
     for f in voo_db.tripulacao:
-        voo.adicionar_funcionario(f.nome)
+        voo.adicionar_tripulante(f.nome)
     return voo
 
 def voo_to_db(voo: VooCreate, aeronave: MiniAeronaveDB) -> VooDB:

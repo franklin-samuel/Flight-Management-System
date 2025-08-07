@@ -34,7 +34,7 @@ class RelatorioService:
         elementos.append(Paragraph("Passageiros:", estilo["Heading4"]))
         if voo.passageiros:
             for passageiro in voo.passageiros:
-                elementos.append(Paragraph(f" - {passageiro.nome} | CPF: {passageiro.cpf}", estilo["Normal"]))
+                elementos.append(Paragraph(f" - {passageiro.nome} | CPF: {passageiro._cpf}", estilo["Normal"]))
                 for bagagem in getattr(passageiro, "bagagens", []):
                     elementos.append(Paragraph(f"    • Bagagem: {bagagem.descricao or 'Sem descrição'} ({bagagem.peso} kg)", estilo["Normal"]))
         else:
