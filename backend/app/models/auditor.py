@@ -1,6 +1,6 @@
 # Classe auditor
-from mixins import AuditavelMixin
-from interfaces import Logavel
+from app.models.mixins import AuditavelMixin
+from app.models.interfaces import Logavel
 
 class Auditor(AuditavelMixin, Logavel):
     def __init__(self, nome: str):
