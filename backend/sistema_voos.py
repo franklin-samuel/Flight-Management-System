@@ -24,7 +24,7 @@ def criar_companhias_e_voos(companhia_service, aeronave_service, voo_service):
 
 def listar_voos(voo_service):
     voos_da_companhia = voo_service.listar_todos_voos()
-    return [f"Número Voo: {v.id} | Origem: {v.origem} | Destino: {v.destino}" for v in voos_da_companhia]
+    return [f"Número Voo: {v.numero_voo} | Origem: {v.origem} | Destino: {v.destino}" for v in voos_da_companhia]
 
 def listar_companhias(companhia_service):
     companhias = companhia_service.listar_todas_companhias()
