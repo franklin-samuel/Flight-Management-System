@@ -1,0 +1,7 @@
+sqlalchemy
+pydantic
+fastapi
+uvicorn
+kwargs
+ABC
+pytest
