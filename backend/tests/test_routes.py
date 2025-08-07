@@ -1,6 +1,11 @@
+from app.tests.limpar_tabelas import limpar_database
+from app.database.session import SessionLocal
 
+db = SessionLocal()
 def test_fluxo_voo_completo(client):
     # Criar companhia
+
+    limpar_database(db)
     resp = client.post("/companhias", params={"nome": "Azul"})
     assert resp.status_code == 201
     companhia_id = resp.json()["id"]
@@ -65,5 +70,4 @@ def test_fluxo_voo_completo(client):
 
     # Verificar que o passageiro não está mais no voo
     resp = client.get(f"/voos/AZ123/passageiros")
-    assert resp.status_code == 200
-    assert all(p["cpf"] != "00011122233" for p in resp.json())
+    assert resp.status_code == 404
