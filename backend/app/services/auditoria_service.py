@@ -2,16 +2,11 @@
 from app.models.auditor import Auditor
 from app.database.crud import buscar_voo
 from database.session import SessionLocal
+from app.services.relatorio_service import RelatorioService
 
 def executar_auditoria(numero_voo: str): #GET /auditoria/{numero_voo}/
     db = SessionLocal() 
     try:
-        voo = buscar_voo(db, numero_voo)
-        auditor = Auditor(nome="Demetrios")
-
-        if voo:
-            auditor.auditar_voo(voo)
-        else:
-            print("Voo nao encontrado")
+        RelatorioService.gerar_pdf_por_numero_voo(numero_voo)
     finally:
         db.close()

@@ -2,7 +2,7 @@ from app.services.passageiro_service import PassageiroService
 from app.services.companhia_service import CompanhiaService
 from app.services.voo_service import VooService
 from app.services.aeronave_services import AeronaveService
-from app.services.auditoria_service import Auditor
+from app.services.auditoria_service import executar_auditoria
 from app.services.funcionario_service import FuncionarioService
 from app.database.session import SessionLocal
 
@@ -97,7 +97,7 @@ def main():
         elif escolha == "7":
             numero_voo = input("Número do voo para auditoria: ")
             try:
-                auditor.executar_auditoria(numero_voo)
+                executar_auditoria(numero_voo)
             except Exception as e:
                 print(f"Erro: {e}")
 
