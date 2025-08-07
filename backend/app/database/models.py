@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Table, Enum
+from sqlalchemy import Column, Integer, String, ForeignKey, Table, Enum, Text
 from sqlalchemy.orm import relationship
 from app.database.base import Base
 import uuid
@@ -9,7 +9,7 @@ tripulantes_voo = Table(
     'tripulantes_voo',
     Base.metadata,
     Column('voo_id', Integer, ForeignKey('voos.id')),
-    Column('funcionario_id', Integer, ForeignKey('funcionarios.id'))
+    Column('funcionario_id', Text, ForeignKey('funcionarios.id'))
 )
 
 voo_passageiro = Table(
@@ -73,17 +73,13 @@ class Bagagem(Base):
     passageiro_id = Column(Integer, ForeignKey('passageiros.id'))
     dono = relationship("Passageiro", back_populates="bagagens")
 
-class CargoEnum(str, enum.Enum):
-    PILOTO = "Piloto"
-    COPILOTO = "Copiloto"
-    COMISSARIO = "Comissário"
 class Funcionario(Base):
     __tablename__ = 'funcionarios'
 
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     nome = Column(String, nullable=False)
     cpf = Column(String, unique=True, nullable=False)
-    cargo = Column(Enum(CargoEnum), nullable=False)
+    cargo = Column(String, nullable=False)
     matricula = Column(String, unique=True,  nullable=False)
 
     voos = relationship("Voo", secondary=tripulantes_voo, back_populates="tripulacao")
