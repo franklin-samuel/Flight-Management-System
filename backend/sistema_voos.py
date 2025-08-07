@@ -4,7 +4,7 @@ from app.services.voo_service import VooService
 from app.services.aeronave_services import AeronaveService
 from app.services.auditoria_service import Auditor
 from app.services.funcionario_service import FuncionarioService
-from app.database import SessionLocal
+from app.database.session import SessionLocal
 
 
 def main():
