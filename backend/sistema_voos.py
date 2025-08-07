@@ -15,7 +15,7 @@ def main():
     passageiro_service = PassageiroService(db)
     funcionario_service = FuncionarioService(db)
     aeronave_service = AeronaveService(db)
-    auditor = Auditor()
+    auditor = Auditor("Samukadev")
 
     while True:
         print("\n=== MENU SISTEMA AÉREO ===")

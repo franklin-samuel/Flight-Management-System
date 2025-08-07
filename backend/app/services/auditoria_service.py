@@ -1,7 +1,7 @@
 # Lógica de negócio de auditoria
 from app.models.auditor import Auditor
 from app.database.crud import buscar_voo
-from database.session import SessionLocal
+from app.database.session import SessionLocal
 from app.services.relatorio_service import RelatorioService
 
 def executar_auditoria(numero_voo: str): #GET /auditoria/{numero_voo}/
