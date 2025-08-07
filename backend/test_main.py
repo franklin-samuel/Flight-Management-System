@@ -9,7 +9,7 @@ from sistema_voos import (
     listar_passageiros_do_voo,
     auditar_voo
 )
-
+import sistema_voos
 # Ativa logs para pytest
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -93,7 +93,7 @@ def test_listar_passageiros_do_voo():
             ]
 
     service = FakeVooService()
-    resultado = listar_passageiros_do_voo(service, "AZ101")
+    resultado = listar_passageiros_do_voo(service, "AZ123")
 
     logger.info(f"Resultado: {resultado}")
     assert resultado == [
@@ -109,14 +109,16 @@ def test_auditar_voo(monkeypatch):
 
     def fake_executar_auditoria(numero_voo):
         logger.info(f"Auditoria executada para o voo {numero_voo}")
-        chamado['numero'] = numero_voo
+        print('SOU EEXECUTADO')
+        chamado['numero_voo'] = numero_voo
 
-    monkeypatch.setattr("sistema_voos.executar_auditoria", fake_executar_auditoria)
-    msg = auditar_voo("AZ101")
+
+    monkeypatch.setattr(sistema_voos, "executar_auditoria", fake_executar_auditoria)
+    msg = sistema_voos.auditar_voo("AZ123")
 
     logger.info(f"Resultado: {msg}")
     assert msg == "Auditoria concluída."
-    assert chamado['numero'] == "AZ101"
+    assert chamado['numero_voo'] == "AZ123"
 
 
 def test_criar_companhias_e_voos():

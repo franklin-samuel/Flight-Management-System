@@ -5,6 +5,7 @@ from app.services.aeronave_services import AeronaveService
 from app.services.auditoria_service import executar_auditoria, Auditor
 from app.services.funcionario_service import FuncionarioService
 from app.database.session import SessionLocal
+from app.services.auditoria_service import executar_auditoria
 
 
 def criar_companhias_e_voos(companhia_service, aeronave_service, voo_service):
@@ -48,7 +49,6 @@ def listar_passageiros_do_voo(voo_service, numero_voo):
 
 
 def auditar_voo(numero_voo):
-    from app.services.auditoria_service import executar_auditoria
     executar_auditoria(numero_voo)
     return "Auditoria concluída."
 
