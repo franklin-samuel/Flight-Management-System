@@ -111,7 +111,7 @@ def test_auditar_voo(monkeypatch):
         logger.info(f"Auditoria executada para o voo {numero_voo}")
         chamado['numero'] = numero_voo
 
-    monkeypatch.setattr("app.menu.executar_auditoria", fake_executar_auditoria)
+    monkeypatch.setattr("sistema_voos.executar_auditoria", fake_executar_auditoria)
     msg = auditar_voo("AZ101")
 
     logger.info(f"Resultado: {msg}")
