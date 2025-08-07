@@ -1,5 +1,9 @@
+from limpar_tabelas import limpar_database
+from app.database.session import SessionLocal
+db = SessionLocal
 
 def test_fluxo_voo_completo(client):
+    limpar_database(db)
     # Criar companhia
     resp = client.post("/companhias", params={"nome": "Azul"})
     assert resp.status_code == 201

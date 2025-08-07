@@ -7,7 +7,6 @@ from app.services.funcionario_service import FuncionarioService
 from app.database.session import SessionLocal
 from app.services.auditoria_service import executar_auditoria
 
-
 def criar_companhias_e_voos(companhia_service, aeronave_service, voo_service):
     companhia1 = companhia_service.criar_companhia("Azul")
     companhia2 = companhia_service.criar_companhia("Gol")
@@ -51,7 +50,6 @@ def listar_passageiros_do_voo(voo_service, numero_voo):
 def auditar_voo(numero_voo):
     executar_auditoria(numero_voo)
     return "Auditoria concluída."
-
 
 def main():
     db = SessionLocal()
@@ -97,7 +95,7 @@ def main():
             elif escolha == "4":
                 nome = input("Nome do funcionário: ")
                 matricula = input("Matrícula: ")
-                cargo = input("Cargo: ")
+                cargo = input("Insira o cargo: ")
                 cpf = input("CPF: ")
                 msg = criar_funcionario(funcionario_service, nome, matricula, cargo, cpf)
                 print(msg)
